@@ -59,6 +59,21 @@ section {
   flex-direction: column;
 }
 
+iframe {
+  border-radius: 20px;
+}
+
+textarea {
+  background: transparent;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  color: #a8a8a8;
+  resize: none;
+}
+
 /* Classes */
 
 .logo {
@@ -251,7 +266,11 @@ section {
 }
 
 .wrapper-after-login.kaiber {
-  height: 350px;
+  height: 400px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
 }
 
 .wrapper-after-login.overview {
@@ -262,8 +281,4 @@ section {
 .wraper-for-video {
   display: flex;
   gap: 50px;
-}
-
-iframe {
-  border-radius: 20px;
 }
