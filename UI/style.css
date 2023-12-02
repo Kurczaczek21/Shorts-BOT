@@ -263,3 +263,7 @@ section {
   display: flex;
   gap: 50px;
 }
+
+iframe {
+  border-radius: 20px;
+}
