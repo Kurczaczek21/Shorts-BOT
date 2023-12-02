@@ -14,16 +14,24 @@ ion-icon {
   font-size: 1em;
 }
 
+::-webkit-scrollbar {
+  display: none; /* Chrome */
+}
+
 /* HTML elements */
 
 body {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
   min-height: 100vh;
   background: url(images/pexels-alex-conchillos-3648850.jpg) no-repeat;
   background-size: cover;
   background-position: center;
+  overflow-y: scroll;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
 }
 
 header {
@@ -43,12 +51,26 @@ input {
   color: #a8a8a8;
 }
 
+section {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
 /* Classes */
 
 .logo {
   font-size: 2em;
   color: #a8a8a8;
   user-select: none;
+}
+
+.home-page-text {
+  color: #a8a8a8;
+  text-align: center;
+  font-size: 2.5em;
 }
 
 .btnLogin-popUp {
@@ -163,7 +185,60 @@ input {
   transition: 0.5s;
 }
 
+.btn a {
+  text-decoration: none;
+  color: #a8a8a8;
+}
+
 .btn:hover {
   background-color: #a8a8a8;
   color: black;
+}
+
+.box {
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #a8a8a8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.blob {
+  width: 300px;
+  height: 300px;
+  position: absolute;
+  top: 100%;
+}
+
+.blob:nth-child(2) {
+  filter: blur(40px);
+}
+
+/* For After login page */
+.wrapper-after-login {
+  background-color: transparent;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+  width: 800px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.wrapper-after-login.smaller {
+  height: 200px;
+  margin-bottom: 20px;
+}
+
+.wrapper-after-login .btn,
+.wrapper-after-login .input-box {
+  margin: 20px 0 20px 0;
 }
