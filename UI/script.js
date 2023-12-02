@@ -1,5 +1,3 @@
-
-
 const wrapper = document.querySelector(".wrapper");
 const btnPopUp = document.querySelector(".btnLogin-popUp");
 const iconClose = document.querySelector(".icon-close");
