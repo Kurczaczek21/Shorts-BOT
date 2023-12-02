@@ -131,6 +131,13 @@ section {
   text-align: center;
 }
 
+.form-box h4 {
+  color: #a8a8a8;
+  font-size: 1em;
+  text-align: center;
+  font-weight: 100;
+}
+
 .input-box {
   position: relative;
   width: 100%;
@@ -241,4 +248,18 @@ section {
 .wrapper-after-login .btn,
 .wrapper-after-login .input-box {
   margin: 20px 0 20px 0;
+}
+
+.wrapper-after-login.kaiber {
+  height: 350px;
+}
+
+.wrapper-after-login.overview {
+  height: 530px;
+  width: 400px;
+}
+
+.wraper-for-video {
+  display: flex;
+  gap: 50px;
 }
