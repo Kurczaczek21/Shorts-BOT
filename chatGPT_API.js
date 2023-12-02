@@ -32,14 +32,14 @@ async function chatWithOpenAI(prompt) {
 }
 
 // Przykładowe użycie
-const userPrompt =
-  "Generate general idea and scenario in 3 steps for a motivational 15s YouTube Short";
-chatWithOpenAI(userPrompt)
-  .then((response) => {
-    console.log(response);
-  })
-  .catch((error) => {
-    console.error("Błąd:", error.message);
-  });
+// const userPrompt =
+//   "Generate general idea and scenario in 3 steps for a motivational 15s YouTube Short";
+// chatWithOpenAI(userPrompt)
+//   .then((response) => {
+//     console.log(response);
+//   })
+//   .catch((error) => {
+//     console.error("Błąd:", error.message);
+//   });
 
 module.exports = { chatWithOpenAI };
