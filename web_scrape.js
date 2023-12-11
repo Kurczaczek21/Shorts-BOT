@@ -1,4 +1,6 @@
 require('dotenv').config();
+const https = require('https');
+const fs = require('fs');
 const puppeteer = require('puppeteer');
 const pictoryLogin = process.env.PICTORY_LOGIN;
 const pictoryPassword = process.env.PICTORY_PASSWORD;
@@ -97,9 +99,32 @@ function delay(time) {
     await page.screenshot({ path: 'hover.png' })
     await page.click('#voiceTrack1009 .css-1g747ue .apply-box span');
     await delay(10000);
-
-
     
+    // Generate video
+    await page.hover('#generate-button-dropdown a');
+    await page.click('#btnGenerate');
+    await delay(60000);
+    await delay(60000);
+    await delay(30000);
+    await page.screenshot({ path: 'post_render.png' });
+    await page.click('.css-13kkobs');
+
+    await delay(20000);
+    console.log(page.url());
+    await page.screenshot({ path: 'video.png' });
+
+    const file = fs.createWriteStream("video.mp4");
+    const request = https.get(page.url(), function(response) {
+        response.pipe(file);
+
+        // after download completed close filestream
+        file.on("finish", () => {
+        file.close();
+        console.log("Download Completed");
+        });
+    });
+
+
     await page.screenshot({ path: 'example.png' });
 
     await browser.close();
