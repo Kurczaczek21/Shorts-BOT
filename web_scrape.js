@@ -53,12 +53,19 @@ function delay(time) {
 
     await page.type('#mui-1', pictoryLogin);
     await page.type('#outlined-adornment-password', pictoryPassword);
-    await page.click('.css-1du8a1u');
+    await page.click('.css-1du8a1u', );
     await delay(10000);
     
     await page.click('.script-to-video-button');
     await page.type('.script-video-name input', dummy_data.title );
+    
+    await page.$$eval('.ck-editor__editable p', (links, value) => links.forEach(el => el.innerHTML = value), 'Unlock Your Potential. Embrace the Challenges. Persist Through Adversity. Dream Big, Work Hard. Failure is a Stepping Stone. Celebrate Your Victories. Stay Focused, Stay Committed. Inspire Others with Your Journey. Success is a Journey, Not a Destination');
+    await delay(10000);
 
+    // await page.click('.css-8aqpyn');
+
+    
+    
     await page.screenshot({ path: 'example.png' });
 
     await browser.close();
