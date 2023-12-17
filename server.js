@@ -16,6 +16,8 @@ app.use(cors());
 
 app.use(express.json());
 
+app.use(express.static(__dirname + "/UI"));
+
 app.get("/", (req, res) => {
   res.send("Welcome to the server!!!");
 });
@@ -49,8 +51,6 @@ app.post("/chat1", async (req, res) => {
 app.listen(port, () => {
   console.log(`Server running on ${port}`);
 });
-
-app.use(express.static("UI"));
 
 app.get("/home", (req, res) => {
   res.sendFile(__dirname + "/UI/home-page.html");
