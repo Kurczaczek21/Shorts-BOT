@@ -5,15 +5,10 @@ const puppeteer = require('puppeteer');
 const pictoryLogin = process.env.PICTORY_LOGIN;
 const pictoryPassword = process.env.PICTORY_PASSWORD;
 
-
-// TO DO
-//  1. Scene duration - extend
-//  2. Subtitles - prettier and bigger
-
-
 function delay(time) {
     return new Promise(function(resolve) { 
         setTimeout(resolve, time)
+        console.log(time+' passed');
     });
  }
 
@@ -47,7 +42,7 @@ function delay(time) {
 (async ()=>{
     const browser = await puppeteer.launch({
         // slowMo: 100,
-        headless: false,
+        // headless: false,
         // args: chromium.args,
         // defaultViewport: chromium.defaultViewport,
         // executablePath: await chromium.executablePath,
@@ -74,14 +69,15 @@ function delay(time) {
 
     // Data insert
     await page.type('.script-video-name input', dummy_data.title );
-    await page.$$eval('.ck-editor__editable p', (links, value) => links.forEach(el => el.innerHTML = value), "Unlock Your Potential. \n Embrace the Challenges.\n Persist Through Adversity.\n Dream Big, Work Hard.\n Failure is a Stepping Stone.\n Celebrate Your Victories.\n Stay Focused, Stay Committed.\n Inspire Others with Your Journey.\n Success is a Journey, Not a Destination");
+    await page.$$eval('.ck-editor__editable p', (links, value) => links.forEach(el => el.innerHTML = value), "Unlock Your Potential.  Embrace the Challenges. Persist Through Adversity. Dream Big, Work Hard. Failure is a Stepping Stone. Celebrate Your Victories. Stay Focused, Stay Committed. Inspire Others with Your Journey. Success is a Journey, Not a Destination");
     await delay(10000);
 
     // Proceed
     await page.click('.css-8aqpyn .css-1he72jf');
-    await delay(40000); // 40s - time for creating video
+    await delay(50000); // 40s - time for creating video
 
     // Choosing Orientation
+    await page.screenshot({ path: './tmp_screenshots/orientation_change.png' });
     await page.click('.css-t788js');
     await delay(2000);
 
@@ -92,13 +88,12 @@ function delay(time) {
     }
     await delay(3000);
 
-    // Increasing scene duration to 3s
-    await page.hover('#scene-duration-container');
-    await delay(2000);
-    await page.focus('#standard-number');
-    await page.keyboard.press('Backspace');
-    await page.type('#standard-number', '3');
-    
+    // Closing watermark info
+    const [wm_button] = await page.$x("//button[contains(., 'Got')]");
+    if (wm_button) {
+        await wm_button.click();
+    }
+    await delay(1000);
 
     // Expanding voiceover menu
     await page.click('#voiceover-menu-button');
@@ -113,10 +108,29 @@ function delay(time) {
     
     // Choosing voice model
     await page.hover('#voiceTrack3034');
+    await page.focus('#voiceTrack3034');
     await page.screenshot({ path: './tmp_screenshots/hover.png' })
-    await delay(2000);
-    await page.click('#voiceTrack3034 .css-1g747ue .apply-box span');
+    await delay(5000);
+    await page.click('#voiceTrack3034 .css-1g747ue .apply-box span');   // common err
     await delay(20000);
+
+    // Change font
+    await page.click('#template-styles-tab');
+    await delay(2000);
+    await page.click('#style_d7eb227e-ff83-4d7b-98c1-6f0e5f3156f6');
+
+    // Increasing scene duration to 3s
+    await page.hover('#scene-duration-container');
+    await delay(2000);
+    await page.focus('#standard-number');
+    await page.keyboard.press('Backspace');
+    await page.type('#standard-number', '3');
+    await delay(1000);
+    await page.hover('#scene-duration-container');
+    await delay(2000);
+    await page.click('.css-1m9pwf3');
+    await delay(1000);
+    await page.screenshot({ path: './tmp_screenshots/duration_change.png' });
     
     // Generate video
     await page.hover('#generate-button-dropdown a');
@@ -125,7 +139,8 @@ function delay(time) {
     await page.click('#btnGenerate');
     await delay(60000);
     await delay(60000);
-    await delay(30000);
+    await delay(60000);
+    await delay(60000);
     await page.screenshot({ path: './tmp_screenshots/post_render.png' });
 
     // await page.click('.css-13kkobs'); // this downloads movie in browser ...
