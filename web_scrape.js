@@ -107,7 +107,7 @@ function delay(time) {
     
     // Choosing voice model
     await page.hover('#voiceTrack3034');
-    await page.screenshot({ path: 'hover.png' })
+    await page.screenshot({ path: './tmp_screenshots/hover.png' })
     await delay(2000);
     await page.click('#voiceTrack3034 .css-1g747ue .apply-box span');
     await delay(20000);
@@ -115,12 +115,12 @@ function delay(time) {
     // Generate video
     await page.hover('#generate-button-dropdown a');
     await delay(5000);
-    await page.screenshot({ path: 'btn_gener.png' });
+    await page.screenshot({ path: './tmp_screenshots/btn_gener.png' });
     await page.click('#btnGenerate');
     await delay(60000);
     await delay(60000);
     await delay(30000);
-    await page.screenshot({ path: 'post_render.png' });
+    await page.screenshot({ path: './tmp_screenshots/post_render.png' });
 
     // await page.click('.css-13kkobs'); // this downloads movie in browser ...
     await page.click('.css-i3999f'); // show Link to download movie
@@ -136,9 +136,7 @@ function delay(time) {
     let src = await page.$eval("video", n => n.getAttribute("src"))
     console.log(src);
 
-    
-    console.log(page.url());
-    await page.screenshot({ path: 'video.png' });
+    await page.screenshot({ path: './tmp_screenshots/video_download.png' });
 
     const file = fs.createWriteStream("./videos/video.mp4");
     const request = https.get(src, function(response) {
@@ -150,10 +148,6 @@ function delay(time) {
         console.log("Download Completed");
         });
     });
-
-    await delay(10000);
-
-    await page.screenshot({ path: 'example.png' });
 
     await browser.close();
 })();
