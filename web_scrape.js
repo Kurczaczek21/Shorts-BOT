@@ -46,8 +46,8 @@ function delay(time) {
 
 (async ()=>{
     const browser = await puppeteer.launch({
-        slowMo: 100,
-        // headless: false,
+        // slowMo: 100,
+        headless: false,
         // args: chromium.args,
         // defaultViewport: chromium.defaultViewport,
         // executablePath: await chromium.executablePath,
@@ -92,7 +92,13 @@ function delay(time) {
     }
     await delay(3000);
 
-
+    // Increasing scene duration to 3s
+    await page.hover('#scene-duration-container');
+    await delay(2000);
+    await page.focus('#standard-number');
+    await page.keyboard.press('Backspace');
+    await page.type('#standard-number', '3');
+    
 
     // Expanding voiceover menu
     await page.click('#voiceover-menu-button');
