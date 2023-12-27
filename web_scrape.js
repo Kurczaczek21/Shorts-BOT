@@ -5,6 +5,12 @@ const puppeteer = require('puppeteer');
 const pictoryLogin = process.env.PICTORY_LOGIN;
 const pictoryPassword = process.env.PICTORY_PASSWORD;
 
+
+// TO DO
+//  1. Scene duration - extend
+//  2. Subtitles - prettier and bigger
+
+
 function delay(time) {
     return new Promise(function(resolve) { 
         setTimeout(resolve, time)
@@ -68,20 +74,25 @@ function delay(time) {
 
     // Data insert
     await page.type('.script-video-name input', dummy_data.title );
-    await page.$$eval('.ck-editor__editable p', (links, value) => links.forEach(el => el.innerHTML = value), 'Unlock Your Potential. Embrace the Challenges. Persist Through Adversity. Dream Big, Work Hard. Failure is a Stepping Stone. Celebrate Your Victories. Stay Focused, Stay Committed. Inspire Others with Your Journey. Success is a Journey, Not a Destination');
+    await page.$$eval('.ck-editor__editable p', (links, value) => links.forEach(el => el.innerHTML = value), "Unlock Your Potential. \n Embrace the Challenges.\n Persist Through Adversity.\n Dream Big, Work Hard.\n Failure is a Stepping Stone.\n Celebrate Your Victories.\n Stay Focused, Stay Committed.\n Inspire Others with Your Journey.\n Success is a Journey, Not a Destination");
     await delay(10000);
 
     // Proceed
     await page.click('.css-8aqpyn .css-1he72jf');
-    await delay(5000);
+    await delay(40000); // 40s - time for creating video
 
-    // Choosing Theme
-    await page.click('#template_1d550871-3707-4503-9e4b-367dd849bfc7');
-    await delay(5000);
+    // Choosing Orientation
+    await page.click('.css-t788js');
+    await delay(2000);
 
     // Choosing aspect ratio
-    await page.click('.css-1x97c6v .css-1lekzkb .css-79elbk');
-    await delay(25000);
+    const [screen_button] = await page.$x("//span[contains(., 'Portrait')]");
+    if (screen_button) {
+        await screen_button.click();
+    }
+    await delay(3000);
+
+
 
     // Expanding voiceover menu
     await page.click('#voiceover-menu-button');
@@ -95,26 +106,42 @@ function delay(time) {
     await page.click('.voice-over-banner div svg');
     
     // Choosing voice model
-    await page.hover('#voiceTrack1009');
+    await page.hover('#voiceTrack3034');
     await page.screenshot({ path: 'hover.png' })
-    await page.click('#voiceTrack1009 .css-1g747ue .apply-box span');
-    await delay(10000);
+    await delay(2000);
+    await page.click('#voiceTrack3034 .css-1g747ue .apply-box span');
+    await delay(20000);
     
     // Generate video
     await page.hover('#generate-button-dropdown a');
+    await delay(5000);
+    await page.screenshot({ path: 'btn_gener.png' });
     await page.click('#btnGenerate');
     await delay(60000);
     await delay(60000);
     await delay(30000);
     await page.screenshot({ path: 'post_render.png' });
-    await page.click('.css-13kkobs');
 
-    await delay(20000);
+    // await page.click('.css-13kkobs'); // this downloads movie in browser ...
+    await page.click('.css-i3999f'); // show Link to download movie
+    await delay(2000);
+
+    await page.waitForSelector('.css-1dzcpmd')
+    let element = await page.$('.css-1dzcpmd')
+    let value = await page.evaluate(el => el.textContent, element)
+
+    await page.goto(value);
+    await delay(5000);
+
+    let src = await page.$eval("video", n => n.getAttribute("src"))
+    console.log(src);
+
+    
     console.log(page.url());
     await page.screenshot({ path: 'video.png' });
 
-    const file = fs.createWriteStream("video.mp4");
-    const request = https.get(page.url(), function(response) {
+    const file = fs.createWriteStream("./videos/video.mp4");
+    const request = https.get(src, function(response) {
         response.pipe(file);
 
         // after download completed close filestream
@@ -124,6 +151,7 @@ function delay(time) {
         });
     });
 
+    await delay(10000);
 
     await page.screenshot({ path: 'example.png' });
 
