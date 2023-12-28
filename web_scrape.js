@@ -5,6 +5,10 @@ const puppeteer = require('puppeteer');
 const pictoryLogin = process.env.PICTORY_LOGIN;
 const pictoryPassword = process.env.PICTORY_PASSWORD;
 
+// todo:
+// 1. time stamps for % of vid render
+// 2. loops to control and shorten te time of video creation
+
 function delay(time) {
     return new Promise(function(resolve) { 
         setTimeout(resolve, time)
