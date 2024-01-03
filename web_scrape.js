@@ -9,41 +9,17 @@ const pictoryPassword = process.env.PICTORY_PASSWORD;
 // 1. time stamps for % of vid render
 // 2. loops to control and shorten te time of video creation
 
-function delay(time) {
-    return new Promise(function(resolve) { 
-        setTimeout(resolve, time)
-        console.log(time+' passed');
-    });
- }
+async function generateVideo(prompt) {
 
-//  chatInput:
-//  napisz mi scnariusz do nowego ktortkirgo filmiku motywacyjnego na yt. 
+    function delay(time) {
+        return new Promise(function(resolve) { 
+            setTimeout(resolve, time)
+            console.log(time/1000+'s passed');
+        });
+     }
+    console.log(prompt);
 
-//  Scenariusz MUSI być w formie:
-//  Pirwsza linia - tytuł
-//  Każda kolejna linia- tekst wyświetlany na konkretnej scenie
- 
-//  W odpowiedzi napisz mi tylko tytuł oraz tekst wyświetlany na konkretnych scenach. Bez opisu scenerii. Sam tekst który będzie wyświetlany na filmie. Nie pisz
-//  Tytuł: , Scena 1: i tak dalej. Napisz sam tekst wyświetlany na filmie.
- 
-//  Odpowiedź zwróc w formie pliku JSON.
-
- dummy_data={
-    "title": "Rise to Greatness",
-    "scenes": [
-      "Unlock Your Potential",
-      "Embrace the Challenges",
-      "Persist Through Adversity",
-      "Dream Big, Work Hard",
-      "Failure is a Stepping Stone",
-      "Celebrate Your Victories",
-      "Stay Focused, Stay Committed",
-      "Inspire Others with Your Journey",
-      "Success is a Journey, Not a Destination"
-    ]
-};  
-
-(async ()=>{
+     try {
     const browser = await puppeteer.launch({
         // slowMo: 100,
         // headless: false,
@@ -55,34 +31,67 @@ function delay(time) {
 
     // Opening browser
     const page = await browser.newPage();
-    await page.setBypassCSP(true);
+    // await page.setBypassCSP(true);
 
     // Opening page
+    console.log("open page");
     await page.goto("https://app.pictory.ai/login");
-    await delay(5000);
-
+    await delay(10000);
     // Logging in
+    console.log('log in');
     await page.type('#mui-1', pictoryLogin);
     await page.type('#outlined-adornment-password', pictoryPassword);
     await page.click('.css-1du8a1u', );
     await delay(10000);
     
     // Declaring video making method
+    console.log('declare video method');
     await page.click('.script-to-video-button');
     await delay(5000);
 
     // Data insert
-    await page.type('.script-video-name input', dummy_data.title );
-    await page.$$eval('.ck-editor__editable p', (links, value) => links.forEach(el => el.innerHTML = value), "Unlock Your Potential.  Embrace the Challenges. Persist Through Adversity. Dream Big, Work Hard. Failure is a Stepping Stone. Celebrate Your Victories. Stay Focused, Stay Committed. Inspire Others with Your Journey. Success is a Journey, Not a Destination");
+    JSONprompt = JSON.parse(prompt);
+    console.log(JSONprompt);
+    // Concatenate sentences with dots between them
+    const concatenatedSentences = JSONprompt.scenes.join('. ');
+    console.log("sceny");
+    console.log(concatenatedSentences);
+
+    // Use the concatenated string in your script
+    console.log('insert video script');
+    await page.type('.script-video-name input', JSONprompt.title);
+    await page.$$eval('.ck-editor__editable p', (links, concatenatedString) => {
+        links.forEach((el) => el.innerHTML = concatenatedString);
+    }, concatenatedSentences);
+    await page.screenshot({ path: './tmp_screenshots/user_input.png' });
     await delay(10000);
 
     // Proceed
+    console.log('proceeding to create vid project');
     await page.click('.css-8aqpyn .css-1he72jf');
-    await delay(50000); // 40s - time for creating video
+    await delay(60000); // 60s - time for creating video
+    await delay(60000); // 60s - time for creating video
 
     // Choosing Orientation
     await page.screenshot({ path: './tmp_screenshots/orientation_change.png' });
     await page.click('.css-t788js');
+    // let button2Clicked = false;
+
+    // while (!button2Clicked) {
+    //     try {
+    //         // Wait for the button to appear on the page
+    //         await page.waitForSelector('.css-t788js', { timeout: 5000 });
+
+    //         // If the button is found, click it
+    //         await page.click('.css-t788js');
+    //         console.log('Button clicked!');
+    //         button2Clicked = true;
+    //     } catch (error) {
+    //         console.error('Button not found. Retrying after a delay...');
+    //         await delay(10000); // Adjust the delay time as needed
+
+    //     }
+    // }
     await delay(2000);
 
     // Choosing aspect ratio
@@ -131,7 +140,8 @@ function delay(time) {
     await page.type('#standard-number', '3');
     await delay(1000);
     await page.hover('#scene-duration-container');
-    await delay(2000);
+    await delay(10000);
+    await page.screenshot({ path: './tmp_screenshots/before_duration_change.png' });
     await page.click('.css-1m9pwf3');
     await delay(1000);
     await page.screenshot({ path: './tmp_screenshots/duration_change.png' });
@@ -141,15 +151,29 @@ function delay(time) {
     await delay(5000);
     await page.screenshot({ path: './tmp_screenshots/btn_gener.png' });
     await page.click('#btnGenerate');
-    await delay(60000);
-    await delay(60000);
-    await delay(60000);
-    await delay(60000);
+
+    let buttonClicked = false;
+
+    while (!buttonClicked) {
+        try {
+            // Wait for the button to appear on the page
+            await page.waitForSelector('.css-i3999f', { timeout: 5000 });
+
+            // If the button is found, click it
+            await page.click('.css-i3999f');
+            console.log('Button clicked!');
+            buttonClicked = true;
+        } catch (error) {
+            console.error('Button not found. Retrying after a delay...');
+            await delay(10000); // Adjust the delay time as needed
+
+        }
+    }
     await page.screenshot({ path: './tmp_screenshots/post_render.png' });
 
     // await page.click('.css-13kkobs'); // this downloads movie in browser ...
-    await page.click('.css-i3999f'); // show Link to download movie
-    await delay(2000);
+    // await page.click('.css-i3999f'); // show Link to download movie
+    await delay(5000);
 
     await page.waitForSelector('.css-1dzcpmd')
     let element = await page.$('.css-1dzcpmd')
@@ -159,11 +183,12 @@ function delay(time) {
     await delay(5000);
 
     let src = await page.$eval("video", n => n.getAttribute("src"))
+    console.log('video done on link:');
     console.log(src);
 
     await page.screenshot({ path: './tmp_screenshots/video_download.png' });
 
-    const file = fs.createWriteStream("./videos/video.mp4");
+    const file = fs.createWriteStream("./videos/video.mp4"); 
     const request = https.get(src, function(response) {
         response.pipe(file);
 
@@ -175,4 +200,12 @@ function delay(time) {
     });
 
     await browser.close();
-})();
+    return src;
+
+} catch (error) {
+    console.error("Error during API call:", error.message);
+    throw error;
+  }
+};
+
+module.exports = { generateVideo };

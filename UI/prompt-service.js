@@ -10,6 +10,7 @@ const loader4 = document.getElementById("loader4");
 const section1 = document.getElementById("section1");
 const section2 = document.getElementById("section2");
 const section3 = document.getElementById("section3");
+const generateVidButton = document.getElementById("generate-vid-btn");
 
 generatePromptBtn.addEventListener("click", async () => {
   generatePromptBtn.style.fontSize = 0;
@@ -41,6 +42,7 @@ sendIdeaButton.addEventListener("click", async () => {
   const userPrompt = ideaInput.value.trim();
   sendIdeaButton.style.fontSize = 0;
   loader2.style.visibility = "visible";
+  console.log(userPrompt);
 
   try {
     const response = await fetch("/chat1", {
@@ -61,9 +63,53 @@ sendIdeaButton.addEventListener("click", async () => {
   } catch (error) {
     console.error("Błąd:", error.message);
   }
-
   sendIdeaButton.style.fontSize = "1em";
   loader2.style.visibility = "hidden";
   ideaInput.value = "";
   section2.scrollIntoView({ behavior: "smooth" });
+});
+
+
+generateVidButton.addEventListener("click", async () => {
+
+  try {
+    vidIdea = promptTextarea.value
+    const response = await fetch("/modify", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ prompt: vidIdea }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log("Odpowiedź z serwera:", data.response);
+      const JSONvidIdea = data.response;
+
+      // start vid gen
+      const vidResponse = await fetch("/genvid", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ prompt: JSONvidIdea }),
+      });
+
+      if (vidResponse.ok) {
+        console.log("DONE..........");
+        const data = await vidResponse.json();
+        console.log("Odpowiedź z serwera:", data);
+        console.log("Odpowiedź z serwera:", data.response);
+        document.getElementById("vid-link").innerHTML = data.response;
+      } else {
+        console.error("Błąd:", vidResponse.status, vidResponse.statusText);
+      }
+
+    } else {
+      console.error("Błąd:", response.status, response.statusText);
+    }
+  } catch (error) {
+    console.error("Błąd:", error.message);
+  }
 });
