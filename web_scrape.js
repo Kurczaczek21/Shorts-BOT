@@ -9,25 +9,6 @@ const pictoryPassword = process.env.PICTORY_PASSWORD;
 // 1. time stamps for % of vid render
 // 2. loops to control and shorten te time of video creation
 
-function delay(time) {
-    return new Promise(function(resolve) { 
-        setTimeout(resolve, time)
-        console.log(time+' passed');
-    });
- }
-
-//  chatInput:
-//  napisz mi scnariusz do nowego ktortkirgo filmiku motywacyjnego na yt. 
-
-//  Scenariusz MUSI być w formie:
-//  Pirwsza linia - tytuł
-//  Każda kolejna linia- tekst wyświetlany na konkretnej scenie
- 
-//  W odpowiedzi napisz mi tylko tytuł oraz tekst wyświetlany na konkretnych scenach. Bez opisu scenerii. Sam tekst który będzie wyświetlany na filmie. Nie pisz
-//  Tytuł: , Scena 1: i tak dalej. Napisz sam tekst wyświetlany na filmie.
- 
-//  Odpowiedź zwróc w formie pliku JSON.
-
  dummy_data={
     "title": "Rise to Greatness",
     "scenes": [
@@ -43,14 +24,24 @@ function delay(time) {
     ]
 };  
 
-(async ()=>{
+async function generateVideo(prompt) {
+
+    function delay(time) {
+        return new Promise(function(resolve) { 
+            setTimeout(resolve, time)
+            console.log(time+' passed');
+        });
+     }
+    console.log(prompt);
+
+     try {
     const browser = await puppeteer.launch({
         // slowMo: 100,
-        headless: false,
-        // args: chromium.args,
-        // defaultViewport: chromium.defaultViewport,
-        // executablePath: await chromium.executablePath,
-        // ignoreHTTPSErrors: true,
+        // headless: false,
+        args: chromium.args,
+        defaultViewport: chromium.defaultViewport,
+        executablePath: await chromium.executablePath,
+        ignoreHTTPSErrors: true,
     });
 
     // Opening browser
@@ -72,11 +63,13 @@ function delay(time) {
     await delay(5000);
 
     // Data insert
+    JSONprompt = JSON.parse(prompt);
+    console.log(JSONprompt);
     // Concatenate sentences with dots between them
-const concatenatedSentences = dummy_data.scenes.join('. ');
+    const concatenatedSentences = JSONprompt.scenes.join('. ');
 
     // Use the concatenated string in your script
-    await page.type('.script-video-name input', dummy_data.title);
+    await page.type('.script-video-name input', JSONprompt.title);
     await page.$$eval('.ck-editor__editable p', (links, concatenatedString) => {
         links.forEach((el) => el.innerHTML = concatenatedString);
     }, concatenatedSentences);
@@ -181,4 +174,11 @@ const concatenatedSentences = dummy_data.scenes.join('. ');
     });
 
     await browser.close();
-})();
+} catch (error) {
+    await browser.close();
+    console.error("Error during API call:", error.message);
+    throw error;
+  }
+};
+
+module.exports = { generateVideo };

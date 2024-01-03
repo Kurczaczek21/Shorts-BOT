@@ -25,6 +25,7 @@ generatePromptBtn.addEventListener("click", async () => {
 
 sendIdeaButton.addEventListener("click", async () => {
   const userPrompt = ideaInput.value.trim();
+  console.log(userPrompt);
 
   try {
     const response = await fetch("/chat1", {
@@ -51,19 +52,38 @@ sendIdeaButton.addEventListener("click", async () => {
 generateVidButton.addEventListener("click", async () => {
 
   try {
-    videIdea = promptTextarea.value
+    vidIdea = promptTextarea.value
     const response = await fetch("/modify", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ prompt: videIdea }),
+      body: JSON.stringify({ prompt: vidIdea }),
     });
 
     if (response.ok) {
       const data = await response.json();
       console.log("Odpowiedź z serwera:", data.response);
-      promptTextarea.value = data.response;
+      const JSONvidIdea = data.response;
+
+      // start vid gen
+      const vidResponse = await fetch("/genvid", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ prompt: JSONvidIdea }),
+      });
+
+      if (vidResponse.ok) {
+        const data = await response.json();
+        console.log("Odpowiedź z serwera:", data.response);
+        console.log(data.response.title);
+        promptTextarea.value = data.response;
+      } else {
+        console.error("Błąd:", vidResponse.status, vidResponse.statusText);
+      }
+
     } else {
       console.error("Błąd:", response.status, response.statusText);
     }
