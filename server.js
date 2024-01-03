@@ -5,6 +5,11 @@ const cors = require("cors");
 const Dotenv = require("dotenv-webpack");
 const { chatWithOpenAI } = require("./chatGPT_API");
 
+const connectDB = require("./backend/MongoDB/connectDB");
+const loggedInRouter = require('./backend/routes/loggedInRoute');
+const authRoutes = require('./backend/MongoDB/auth');
+const registerRoutes = require('./backend/MongoDB/register');
+
 module.exports = {
   // Konfiguracja webpack
   plugins: [new Dotenv()],
@@ -12,9 +17,16 @@ module.exports = {
 
 const port = process.env.PORT;
 
+connectDB();
+
 app.use(cors());
 
 app.use(express.json());
+
+// Login & Register
+app.use('/login', authRoutes);
+app.use('/register', registerRoutes);
+app.use('/logged-in', loggedInRouter);
 
 app.use(express.static(__dirname + "/UI"));
 
