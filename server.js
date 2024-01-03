@@ -56,6 +56,6 @@ app.get("/home", (req, res) => {
   res.sendFile(__dirname + "/UI/home-page.html");
 });
 
-app.get("/logged-in", (req, res) => {
+app.get("/logged", (req, res) => {
   res.sendFile(__dirname + "/UI/after-login.html");
 });
