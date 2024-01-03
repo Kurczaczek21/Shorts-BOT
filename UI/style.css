@@ -18,6 +18,14 @@ ion-icon {
   display: none; /* Chrome */
 }
 
+.background {
+  position: absolute;
+  display: block;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
 /* HTML elements */
 
 body {
@@ -26,8 +34,8 @@ body {
   justify-content: center;
   flex-direction: column;
   min-height: 100vh;
-  background: url(images/pexels-alex-conchillos-3648850.jpg) no-repeat;
-  background-attachment: fixed;
+  /* background: url(images/pexels-alex-conchillos-3648850.jpg) no-repeat; */
+  background: #0a0a0a;
   background-size: cover;
   background-position: center;
   overflow-y: scroll;
@@ -78,7 +86,7 @@ textarea {
 /* Classes */
 
 .logo {
-  font-size: 2em;
+  height: 5em;
   color: #a8a8a8;
   user-select: none;
 }
