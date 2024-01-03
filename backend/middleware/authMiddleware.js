@@ -1,21 +1,31 @@
 // middleware/authMiddleware.js
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
+const User = require("../MongoDB/userModel.js");
+require("dotenv").config();
 
-function verifyToken(req, res, next) {
-  const token = req.headers.authorization;
+async function verifyToken(req, res, next) {
+  let token;
 
-  if (!token) {
-    return res.status(401).send('Unauthorized: No token provided');
+  if (req.headers.authorization) {
+    try {
+      token = req.headers.authorization;
+
+      // decodes token id
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+      req.user = await User.findById(decoded.id).select("-password");
+
+      next();
+    } catch (error) {
+      res.status(401);
+      throw new Error("Not authorized, token failed");
+    }
   }
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    if (err) {
-      return res.status(401).send('Unauthorized: Invalid token');
-    }
-
-    req.userId = decoded.userId;
-    next();
-  });
+  if (!token) {
+    res.status(401);
+    throw new Error("Not authorized, no token");
+  }
 }
 
 module.exports = verifyToken;
