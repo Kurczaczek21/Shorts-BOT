@@ -48,8 +48,32 @@ app.post("/chat1", async (req, res) => {
   }
 });
 
+app.post("/modify", async (req, res) => {
+  console.log(req.body.prompt);
+  const prompt = req.body.prompt;
+
+  try {
+    const input_info = `
+      Scenariusz MUSI być w formie:
+      Pirwsza linia - tytuł
+      Każda kolejna linia- sam tekst wyświetlany na konkretnej scenie
+
+      W odpowiedzi napisz mi tylko tytuł oraz tekst wyświetlany na konkretnych scenach. Bez opisu scenerii. Sam tekst który będzie wyświetlany na filmie. Nie pisz
+      Tytuł: , Scena 1: i tak dalej. Napisz sam tekst wyświetlany na filmie.
+
+      Odpowiedź zwróc w formie pliku JSON.
+      `;
+    console.log(prompt + input_info);
+    const response = await chatWithOpenAI(prompt + input_info);
+    res.json({ response });
+  } catch (error) {
+    console.error("Błąd:", error.message);
+    res.status(500).json({ error: "Wystąpił błąd podczas rozmowy z OpenAI." });
+  }
+});
+
 app.listen(port, () => {
-  console.log(`Server running on ${port}`);
+  console.log(`Server running on http://localhost:${port}`);
 });
 
 app.get("/home", (req, res) => {

@@ -46,7 +46,7 @@ function delay(time) {
 (async ()=>{
     const browser = await puppeteer.launch({
         // slowMo: 100,
-        // headless: false,
+        headless: false,
         // args: chromium.args,
         // defaultViewport: chromium.defaultViewport,
         // executablePath: await chromium.executablePath,
@@ -72,8 +72,14 @@ function delay(time) {
     await delay(5000);
 
     // Data insert
-    await page.type('.script-video-name input', dummy_data.title );
-    await page.$$eval('.ck-editor__editable p', (links, value) => links.forEach(el => el.innerHTML = value), "Unlock Your Potential.  Embrace the Challenges. Persist Through Adversity. Dream Big, Work Hard. Failure is a Stepping Stone. Celebrate Your Victories. Stay Focused, Stay Committed. Inspire Others with Your Journey. Success is a Journey, Not a Destination");
+    // Concatenate sentences with dots between them
+const concatenatedSentences = dummy_data.scenes.join('. ');
+
+    // Use the concatenated string in your script
+    await page.type('.script-video-name input', dummy_data.title);
+    await page.$$eval('.ck-editor__editable p', (links, concatenatedString) => {
+        links.forEach((el) => el.innerHTML = concatenatedString);
+    }, concatenatedSentences);
     await delay(10000);
 
     // Proceed
