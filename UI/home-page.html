@@ -19,7 +19,7 @@
       </h1>
       <div class="blob">
         <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-          <path fill="#08BDBA" transform="translate(100 100)">
+          <path fill="#d60404" transform="translate(100 100)">
             <animate
               attributeName="d"
               dur="10000ms"
@@ -48,7 +48,7 @@
       </div>
       <div class="blob">
         <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-          <path fill="#08BDBA" transform="translate(100 100)">
+          <path fill="#9c0303" transform="translate(100 100)">
             <animate
               attributeName="d"
               dur="10000ms"
@@ -97,13 +97,16 @@
             <input type="password" required />
             <label>Password</label>
 
-            <button type="submit" class="btn">Login</button>
+            <button type="submit" class="btn" onclick="route()">
+              <a href="/logged-in">Login</a>
+            </button>
           </div>
         </form>
       </div>
     </div>
 
     <script src="script.js"></script>
+    <script src="router.js"></script>
     <script
       type="module"
       src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"

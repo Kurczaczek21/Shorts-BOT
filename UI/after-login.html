@@ -9,7 +9,9 @@
   <body>
     <header>
       <h2 class="logo">Logo</h2>
-      <button class="btnLogin-popUp">Log out</button>
+      <a href="/home">
+        <button class="btnLogin-popUp" onclick="route()">Log out</button>
+      </a>
     </header>
 
     <section>
@@ -30,10 +32,10 @@
                 <span class="icon">
                   <ion-icon name="chatbox"></ion-icon>
                 </span>
-                <input type="login" required />
+                <input type="login" id="idea-input" required />
                 <label>Come up with your own idea..</label>
               </div>
-              <button type="submit" class="btn">Send</button>
+              <button type="submit" class="btn" id="idea-send">Send</button>
             </form>
           </div>
         </div>
@@ -82,6 +84,7 @@
 
     <script src="script.js"></script>
     <script src="prompt-service.js"></script>
+    <script src="router.js"></script>
     <script
       type="module"
       src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
