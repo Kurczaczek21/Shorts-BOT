@@ -67,7 +67,3 @@ app.listen(port, () => {
 app.get("/home", (req, res) => {
   res.sendFile(__dirname + "/UI/home-page.html");
 });
-
-app.get("/logged-in", (req, res) => {
-  res.sendFile(__dirname + "/UI/after-login.html");
-});
