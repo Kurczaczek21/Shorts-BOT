@@ -19,7 +19,10 @@
         <div class="form-box">
           <div class="sec-1">
             <h2>Generate idea with chatGPT</h2>
-            <button class="btn" id="generate-prompt-btn">Generate</button>
+            <button class="btn" id="generate-prompt-btn">
+              Generate
+              <div id="loader1"></div>
+            </button>
           </div>
         </div>
       </div>
@@ -35,7 +38,10 @@
                 <input type="login" id="idea-input" required />
                 <label>Come up with your own idea..</label>
               </div>
-              <button type="submit" class="btn" id="idea-send">Send</button>
+              <button type="submit" class="btn" id="idea-send">
+                Send
+                <div id="loader2"></div>
+              </button>
             </form>
           </div>
         </div>
@@ -47,7 +53,10 @@
           <div class="sec-2">
             <h2>Here is your video idea!</h2>
             <h4>Edit it if you are not satisfied</h4>
-            <button type="submit" class="btn">Generate</button>
+            <button type="submit" class="btn">
+              Generate
+              <div id="loader3"></div>
+            </button>
           </div>
         </div>
         <textarea
@@ -68,7 +77,10 @@
                 You can now upload it on your <br />
                 YouTube channel
               </h4>
-              <button type="submit" class="btn">Upload</button>
+              <button type="submit" class="btn">
+                Upload
+                <div id="loader4"></div>
+              </button>
             </div>
           </div>
         </div>
