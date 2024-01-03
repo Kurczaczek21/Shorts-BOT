@@ -76,10 +76,9 @@ generateVidButton.addEventListener("click", async () => {
       });
 
       if (vidResponse.ok) {
-        const data = await response.json();
-        console.log("Odpowiedź z serwera:", data.response);
-        console.log(data.response.title);
-        promptTextarea.value = data.response;
+        console.log("DONE..........");
+        const data = await vidResponse.json();
+        console.log("Odpowiedź z serwera:", data.vidResponse);
       } else {
         console.error("Błąd:", vidResponse.status, vidResponse.statusText);
       }

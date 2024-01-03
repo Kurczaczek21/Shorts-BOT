@@ -29,7 +29,7 @@ async function generateVideo(prompt) {
     function delay(time) {
         return new Promise(function(resolve) { 
             setTimeout(resolve, time)
-            console.log(time+' passed');
+            console.log(time/100+'s passed');
         });
      }
     console.log(prompt);
@@ -38,10 +38,10 @@ async function generateVideo(prompt) {
     const browser = await puppeteer.launch({
         // slowMo: 100,
         // headless: false,
-        args: chromium.args,
-        defaultViewport: chromium.defaultViewport,
-        executablePath: await chromium.executablePath,
-        ignoreHTTPSErrors: true,
+        // args: chromium.args,
+        // defaultViewport: chromium.defaultViewport,
+        // executablePath: await chromium.executablePath,
+        // ignoreHTTPSErrors: true,
     });
 
     // Opening browser
@@ -49,10 +49,12 @@ async function generateVideo(prompt) {
     await page.setBypassCSP(true);
 
     // Opening page
+    console.log("open page");
     await page.goto("https://app.pictory.ai/login");
     await delay(5000);
-
+    console.log("openpage");
     // Logging in
+    console.log('log in');
     await page.type('#mui-1', pictoryLogin);
     await page.type('#outlined-adornment-password', pictoryPassword);
     await page.click('.css-1du8a1u', );
@@ -175,7 +177,6 @@ async function generateVideo(prompt) {
 
     await browser.close();
 } catch (error) {
-    await browser.close();
     console.error("Error during API call:", error.message);
     throw error;
   }
