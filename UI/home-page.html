@@ -82,22 +82,22 @@
       </span>
       <div class="form-box login">
         <h2>Login</h2>
-        <form action="#">
+        <form action="login" method="POST">
           <div class="input-box">
             <span class="icon">
               <ion-icon name="person"></ion-icon>
             </span>
-            <input type="login" required />
+            <input type="login" id="username" name="username" required />
             <label>Login</label>
           </div>
           <div class="input-box">
             <span class="icon">
               <ion-icon name="lock-closed"></ion-icon>
             </span>
-            <input type="password" required />
+            <input type="password" id="password" name="password" required />
             <label>Password</label>
 
-            <button type="submit" class="btn" onclick="route()">
+            <button type="submit" class="btn" id="login_button" onclick="route()">
               <a href="/logged-in">Login</a>
             </button>
           </div>
