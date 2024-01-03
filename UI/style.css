@@ -27,6 +27,7 @@ body {
   flex-direction: column;
   min-height: 100vh;
   background: url(images/pexels-alex-conchillos-3648850.jpg) no-repeat;
+  background-attachment: fixed;
   background-size: cover;
   background-position: center;
   overflow-y: scroll;
