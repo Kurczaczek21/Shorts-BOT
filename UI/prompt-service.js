@@ -7,6 +7,10 @@ const loader2 = document.getElementById("loader2");
 const loader3 = document.getElementById("loader3");
 const loader4 = document.getElementById("loader4");
 
+const section1 = document.getElementById("section1");
+const section2 = document.getElementById("section2");
+const section3 = document.getElementById("section3");
+
 generatePromptBtn.addEventListener("click", async () => {
   generatePromptBtn.style.fontSize = 0;
   loader1.style.visibility = "visible";
@@ -30,6 +34,7 @@ generatePromptBtn.addEventListener("click", async () => {
 
   generatePromptBtn.style.fontSize = "1em";
   loader1.style.visibility = "hidden";
+  section2.scrollIntoView({ behavior: "smooth" });
 });
 
 sendIdeaButton.addEventListener("click", async () => {
@@ -60,4 +65,5 @@ sendIdeaButton.addEventListener("click", async () => {
   sendIdeaButton.style.fontSize = "1em";
   loader2.style.visibility = "hidden";
   ideaInput.value = "";
+  section2.scrollIntoView({ behavior: "smooth" });
 });
