@@ -21,6 +21,7 @@ iconClose.addEventListener("click", () => {
   wrapper.classList.remove("active-popUp");
 });
 
+
 function getCookie(name) {
   var nameEQ = name + "=";
   var cookies = document.cookie.split(";");
@@ -32,50 +33,12 @@ function getCookie(name) {
   return null;
 }
 
-async function makeAuthorizedRequest() {
-  // Get the token from the cookie
-  var token = getCookie("token");
-  console.log(token);
 
-  if (!token) {
-    // Token is not present, handle this case (e.g., redirect to login)
-    console.error("Token is missing. Redirect to login page.");
-    return;
-  }
-
-  try {
-    const response = await fetch("/logged-in", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    console.log(response);
-
-    if (!response.ok) {
-      // Server returned an error status, handle this case
-      console.error("Server returned an error:", response.status);
-      // You might want to redirect to the login page or show an error message to the user
-      return;
-    }
-
-    const data = await response.json();
-    // Handle the successful response data as needed
-    console.log(data);
-  } catch (error) {
-    // Handle network errors or other unexpected issues
-    console.error("Error:", error);
-    // You might want to redirect to the login page or show an error message to the user
-  }
-}
 
 async function login() {
-  // Get the username and password from the form
   var username = document.getElementById("username").value;
   var password = document.getElementById("password").value;
 
-  // Send a POST request to the server for authentication
   await fetch("/login", {
     method: "POST",
     headers: {
@@ -87,11 +50,8 @@ async function login() {
     .then((data) => {
       console.log(data);
       if (data.token) {
-        // Authentication successful, save the token and redirect
         document.cookie = `token=${data.token}; path=/`;
-        makeAuthorizedRequest();
       } else {
-        // Authentication failed, show an error message or handle accordingly
         alert("Authentication failed. Please check your credentials.");
       }
     })
@@ -100,19 +60,17 @@ async function login() {
     });
 }
 
-async function after_login() {
-  // Get all cookies
+
+
+async function checkTokenAndRedirectIfLoggedIn() {
   var cookies = document.cookie;
 
   // Check if "token" cookie exists
   if (cookies.indexOf("token=") === -1) {
-    // "token" cookie not found, display alert
     alert("No token cookie. Please log in first");
   } else {
-    // "token" cookie exists, you can proceed with your logic
-    // For example, you might want to extract the token value and do something with it
+    // "token" cookie exists
     var tokenValue = getCookie("token");
-    // Do something with the tokenValue
     window.location.href = "/logged-in";
     fetch("/logged-in", {
       method: "GET",
@@ -122,12 +80,10 @@ async function after_login() {
     })
       .then((response) => {
         if (response.ok) {
-          // If the response is OK, redirect the user to "/logged-in"
+          alert("Token correct. Redirecting to the video creation page.");
         } else if (response.status === 401) {
-          // If the server responds with 401, the token is not valid
           alert("Token is not valid. Please log in again.");
         } else {
-          // Handle other error cases as needed
           alert("Error: Unable to access /logged-in");
         }
       })
