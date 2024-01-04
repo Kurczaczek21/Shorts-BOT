@@ -4,6 +4,7 @@ const fs = require("fs");
 const puppeteer = require("puppeteer");
 const pictoryLogin = process.env.PICTORY_LOGIN;
 const pictoryPassword = process.env.PICTORY_PASSWORD;
+const { processVideo } = require('./insta_upload_v2/mainProcessor.js');
 
 // todo:
 // 1. time stamps for % of vid render
@@ -61,6 +62,8 @@ async function generateVideo(prompt) {
     console.log("sceny");
     console.log(JSONprompt.description);
     console.log(concatenatedSentences);
+
+    caption = JSONprompt.title + "! :) " + JSONprompt.description
 
     // Use the concatenated string in your script
     console.log("insert video script");
@@ -210,11 +213,18 @@ async function generateVideo(prompt) {
     });
 
     await browser.close();
-    return src;
+
+    const igUserId = process.env.IG_USER_ID;
+    const accessToken = process.env.ACCESS_TOKEN;
+
+
+    processVideo(src, caption, accessToken, igUserId)
+    // return src;
   } catch (error) {
     console.error("Error during API call:", error.message);
     throw error;
   }
+
 }
 
 module.exports = { generateVideo };
