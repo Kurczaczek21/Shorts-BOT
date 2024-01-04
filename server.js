@@ -29,18 +29,18 @@ app.use(express.json());
 // Login & Register
 app.use("/login", authRoutes);
 app.use("/register", registerRoutes);
-app.get("/logged-in", authenticateToken, (req, res) => {
-  res.setHeader('Content-Type', 'text/html');
+app.get("/logged-in", (req, res) => {
   res.sendFile(__dirname + "/UI/after-login.html");
 });
 
 app.use(express.static(__dirname + "/UI"));
 
+
 app.get("/", (req, res) => {
   res.send("Welcome to the server!!!");
 });
 
-app.get("/chat", async (req, res) => {
+app.get("/chat", authenticateToken, async (req, res) => {
   const prompt =
     "Generate general idea and scenario in 3 steps for a motivational 15s YouTube Short";
 
@@ -53,7 +53,7 @@ app.get("/chat", async (req, res) => {
   }
 });
 
-app.post("/chat1", async (req, res) => {
+app.post("/chat1", authenticateToken, async (req, res) => {
   console.log(req.body.prompt);
   const prompt = req.body.prompt;
 
@@ -93,7 +93,7 @@ app.post("/test-login", async (req, res) => {
 function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization']
   console.log(authHeader)
-  const token = authHeader // && authHeader.split(' ')[1]
+  const token = authHeader && authHeader.split(' ')[1]
   console.log("TOken: " + token)
   if (token == null) return res.sendStatus(401)
 
