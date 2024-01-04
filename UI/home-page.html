@@ -47,6 +47,13 @@
         </svg>
       </div>
       <div class="blob">
+        <button
+          class="btnLogin-popUp"
+          onclick="checkTokenAndRedirectIfLoggedIn()"
+        >
+          <!-- <a href="/logged-in">Get started</a> -->
+          Get started
+        </button>
         <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
           <path fill="#9c0303" transform="translate(100 100)">
             <animate
@@ -75,11 +82,6 @@
           </path>
         </svg>
       </div>
-      <button class="btnLogin-popUp" onclick="checkTokenAndRedirectIfLoggedIn()">
-        <!-- <a href="/logged-in">Get started</a> -->
-        Get started
-      </button>
-
     </div>
     <div class="wrapper">
       <span class="icon-close">
@@ -102,7 +104,12 @@
             <input type="password" id="password" name="password" required />
             <label>Password</label>
 
-            <button type="button" class="btn" id="login_button" onclick="login()">
+            <button
+              type="button"
+              class="btn"
+              id="login_button"
+              onclick="login()"
+            >
               Login
             </button>
           </div>

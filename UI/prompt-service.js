@@ -12,6 +12,8 @@ const section2 = document.getElementById("section2");
 const section3 = document.getElementById("section3");
 const generateVidButton = document.getElementById("generate-vid-btn");
 
+const video = document.querySelector("video");
+
 generatePromptBtn.addEventListener("click", async () => {
   generatePromptBtn.style.fontSize = 0;
   loader1.style.visibility = "visible";
@@ -53,9 +55,6 @@ generatePromptBtn.addEventListener("click", async () => {
   loader1.style.visibility = "hidden";
   section2.scrollIntoView({ behavior: "smooth" });
 });
-
-
-
 
 sendIdeaButton.addEventListener("click", async () => {
   const userPrompt = ideaInput.value.trim();
@@ -102,11 +101,11 @@ sendIdeaButton.addEventListener("click", async () => {
   section2.scrollIntoView({ behavior: "smooth" });
 });
 
-
 generateVidButton.addEventListener("click", async () => {
-
+  generateVidButton.style.fontSize = 0;
+  loader3.style.visibility = "visible";
   try {
-    vidIdea = promptTextarea.value
+    vidIdea = promptTextarea.value;
     const response = await fetch("/modify", {
       method: "POST",
       headers: {
@@ -135,16 +134,20 @@ generateVidButton.addEventListener("click", async () => {
         console.log("Odpowiedź z serwera:", data);
         console.log("Odpowiedź z serwera:", data.response);
         document.getElementById("vid-link").innerHTML = data.response;
+        generateVidButton.style.fontSize = "1em";
+        loader3.style.visibility = "hidden";
+        video.load();
       } else {
         console.error("Błąd:", vidResponse.status, vidResponse.statusText);
       }
-
     } else {
       console.error("Błąd:", response.status, response.statusText);
     }
   } catch (error) {
     console.error("Błąd:", error.message);
   }
+
+  section3.scrollIntoView({ behavior: "smooth" });
 });
 
 function getCookie(name) {

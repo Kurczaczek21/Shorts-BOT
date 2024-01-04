@@ -77,8 +77,7 @@
                 You can now upload it on your <br />
                 YouTube channel
               </h4>
-              <h4 id="vid-link">
-              </h4>
+              <h4 id="vid-link"></h4>
               <button type="submit" class="btn">
                 Upload
                 <div id="loader4"></div>
@@ -86,16 +85,14 @@
             </div>
           </div>
         </div>
-        <!-- IFRAME VID PATH NOT WORKING -->
-        <iframe
+        <video
           height="530"
-          src="../videos/video.mp4"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        >
-        </iframe>
+          src="./videos/video.mp4"
+          autoplay
+          controls
+          loop
+        ></video>
       </div>
-      <!-- <canvas class="background"></canvas> -->
     </section>
 
     <script src="script.js"></script>
