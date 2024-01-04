@@ -16,9 +16,25 @@ generatePromptBtn.addEventListener("click", async () => {
   generatePromptBtn.style.fontSize = 0;
   loader1.style.visibility = "visible";
 
+  // Get all cookies
+  var cookies = document.cookie;
+
+  // Check if "token" cookie exists
+  if (cookies.indexOf("token=") === -1) {
+    // "token" cookie not found, display alert
+    alert("No token cookie. Please log in first");
+    return;
+  }
+
+  var token = getCookie("token");
+  console.log(token);
+
   try {
     const response = await fetch("/chat", {
       method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
 
     if (response.ok) {
@@ -38,17 +54,34 @@ generatePromptBtn.addEventListener("click", async () => {
   section2.scrollIntoView({ behavior: "smooth" });
 });
 
+
+
+
 sendIdeaButton.addEventListener("click", async () => {
   const userPrompt = ideaInput.value.trim();
   sendIdeaButton.style.fontSize = 0;
   loader2.style.visibility = "visible";
   console.log(userPrompt);
 
+  // Get all cookies
+  var cookies = document.cookie;
+
+  // Check if "token" cookie exists
+  if (cookies.indexOf("token=") === -1) {
+    // "token" cookie not found, display alert
+    alert("No token cookie. Please log in first");
+    return;
+  }
+
+  var token = getCookie("token");
+  console.log(token);
+
   try {
     const response = await fetch("/chat1", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ prompt: userPrompt }),
     });
@@ -113,3 +146,14 @@ generateVidButton.addEventListener("click", async () => {
     console.error("Błąd:", error.message);
   }
 });
+
+function getCookie(name) {
+  var nameEQ = name + "=";
+  var cookies = document.cookie.split(";");
+  for (var i = 0; i < cookies.length; i++) {
+    var cookie = cookies[i].trim();
+    if (cookie.indexOf(nameEQ) === 0)
+      return cookie.substring(nameEQ.length, cookie.length);
+  }
+  return null;
+}
