@@ -1,6 +1,7 @@
 const axios = require('axios');
 require('dotenv').config();
 
+// Load environment variables
 const igUserId = process.env.IG_USER_ID;
 const accessToken = process.env.ACCESS_TOKEN;
 const videoUrl = process.env.VIDEO_URL;
@@ -67,22 +68,27 @@ async function publishVideo(results, accessToken, igUserId) {
   }
 }
 
+// Main function
 async function main() {
   try {
+    // Call uploadVideo function
     const results = await uploadVideo(videoUrl, accessToken, igUserId, caption);
     console.log('Please wait, the video is uploading');
-    await new Promise((resolve) => setTimeout(resolve, 15000)); // Wait for 15 seconds for the video to upload
+    await new Promise((resolve) => setTimeout(resolve, 15000)); // Wait for 15 seconds
 
     const igContainerId = results.id;
 
+    // Call getStatusCode function
     const s = await getStatusCode(igContainerId, accessToken);
 
     if (s === 'FINISHED') {
       console.log('Video uploaded successfully!');
+      // Call publishVideo function
       await publishVideo(results, accessToken, igUserId);
     } else {
       console.log('Please wait a bit more...');
-      await new Promise((resolve) => setTimeout(resolve, 60000)); // Wait for 1 more minute
+      await new Promise((resolve) => setTimeout(resolve, 60000)); // Wait for 60 seconds
+      // Call publishVideo function
       await publishVideo(results, accessToken, igUserId);
     }
 
@@ -92,4 +98,10 @@ async function main() {
   }
 }
 
-main();
+// Run the main function
+// main();
+module.exports = {
+  uploadVideo,
+  getStatusCode,
+  publishVideo,
+};
