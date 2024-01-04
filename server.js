@@ -6,8 +6,7 @@ const Dotenv = require("dotenv-webpack");
 const { chatWithOpenAI } = require("./chatGPT_API");
 const { generateVideo } = require("./web_scrape");
 const User = require("./backend/MongoDB/userModel");
-const jwt = require('jsonwebtoken');
-
+const jwt = require("jsonwebtoken");
 
 const connectDB = require("./backend/MongoDB/connectDB");
 const loggedInRouter = require("./backend/routes/loggedInRoute");
@@ -36,14 +35,13 @@ app.get("/logged-in", (req, res) => {
 
 app.use(express.static(__dirname + "/UI"));
 
-
 app.get("/", (req, res) => {
   res.send("Welcome to the server!!!");
 });
 
 app.get("/chat", authenticateToken, async (req, res) => {
   const prompt =
-    "Generate general idea and scenario in 3 steps for a motivational 15s YouTube Short";
+    "Napisz 5 zdań, kompletnie niezależnych od siebie w numerowanej liście";
 
   try {
     const response = await chatWithOpenAI(prompt);
@@ -76,7 +74,7 @@ app.post("/modify", async (req, res) => {
       UWAGA w odpwiedzi mozesz zawrzec maksymalnie jeden film.
       Scenariusz MUSI być w formie:
       Pirwsza linia - tytuł
-      Każda kolejna linia- sam tekst wyświetlany na konkretnej scenie
+      Każda kolejna linia- sam tekst wyświetlany na konkretnej scenie, BEZ KROPKI NA KOŃCU
 
       W odpowiedzi napisz mi tylko tytuł oraz tekst wyświetlany na konkretnych scenach. Bez opisu scenerii. Bez numerow scen. Sam tekst który będzie wyświetlany na filmie. Nie pisz
       Tytuł: , Scena 1: i tak dalej. Napisz sam tekst wyświetlany na filmie.
@@ -90,7 +88,8 @@ app.post("/modify", async (req, res) => {
           "TEKST wyswetlanyna scenie 2",
           "TEKST wyswetlanyna scenie 3",
           "TESKT wyswetilani na koncu filmu"
-        ]
+        ],
+        "description": "krótki opis filmu i 3 tagi każdy po znaku #"
       };  
       Oczywiscie scen moze byc wiecej.
       `;
@@ -131,24 +130,24 @@ app.get("/tests", authenticateToken, (req, res) => {
 app.post("/test-login", async (req, res) => {
   const username = req.body.username;
   const user = await User.findOne({ username });
-  const id = user._id
+  const id = user._id;
   console.log(id);
-  const accessToken = jwt.sign({id}, process.env.JWT_SECRET, {
+  const accessToken = jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: "30d",
-  })
+  });
   res.json({ accessToken: accessToken });
 });
 
 function authenticateToken(req, res, next) {
-  const authHeader = req.headers['authorization']
-  console.log(authHeader)
-  const token = authHeader && authHeader.split(' ')[1]
-  console.log("TOken: " + token)
-  if (token == null) return res.sendStatus(401)
+  const authHeader = req.headers["authorization"];
+  console.log(authHeader);
+  const token = authHeader && authHeader.split(" ")[1];
+  console.log("TOken: " + token);
+  if (token == null) return res.sendStatus(401);
 
   jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err) return res.sendStatus(418)
-    req.user = user
-    next()
-  })
+    if (err) return res.sendStatus(418);
+    req.user = user;
+    next();
+  });
 }

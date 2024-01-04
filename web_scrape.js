@@ -52,8 +52,14 @@ async function generateVideo(prompt) {
     JSONprompt = JSON.parse(prompt);
     console.log(JSONprompt);
     // Concatenate sentences with dots between them
-    const concatenatedSentences = JSONprompt.scenes.join(". ");
+    let concatenatedSentences;
+    if (JSONprompt.scenes[0].includes(".")) {
+      concatenatedSentences = JSONprompt.scenes.join(" ");
+    } else {
+      concatenatedSentences = JSONprompt.scenes.join(". ");
+    }
     console.log("sceny");
+    console.log(JSONprompt.description);
     console.log(concatenatedSentences);
 
     // Use the concatenated string in your script
@@ -66,7 +72,7 @@ async function generateVideo(prompt) {
       },
       concatenatedSentences
     );
-    await page.screenshot({ path: "./tmp_screenshots/user_input.png" });
+    // await page.screenshot({ path: "./tmp_screenshots/user_input.png" });
     await delay(10000);
 
     // Proceed
@@ -76,7 +82,7 @@ async function generateVideo(prompt) {
     await delay(60000); // 60s - time for creating video
 
     // Choosing Orientation
-    await page.screenshot({ path: "./tmp_screenshots/orientation_change.png" });
+    // await page.screenshot({ path: "./tmp_screenshots/orientation_change.png" });
     await page.click(".css-t788js");
     // let button2Clicked = false;
 
@@ -125,7 +131,7 @@ async function generateVideo(prompt) {
     // Choosing voice model
     await page.hover("#voiceTrack3034");
     await page.focus("#voiceTrack3034");
-    await page.screenshot({ path: "./tmp_screenshots/hover.png" });
+    // await page.screenshot({ path: "./tmp_screenshots/hover.png" });
     await delay(5000);
     await page.click("#voiceTrack3034 .css-1g747ue .apply-box span"); // common err
     await delay(20000);
@@ -144,17 +150,17 @@ async function generateVideo(prompt) {
     await delay(1000);
     await page.hover("#scene-duration-container");
     await delay(10000);
-    await page.screenshot({
-      path: "./tmp_screenshots/before_duration_change.png",
-    });
+    // await page.screenshot({
+    //   path: "./tmp_screenshots/before_duration_change.png",
+    // });
     await page.click(".css-1m9pwf3");
     await delay(1000);
-    await page.screenshot({ path: "./tmp_screenshots/duration_change.png" });
+    // await page.screenshot({ path: "./tmp_screenshots/duration_change.png" });
 
     // Generate video
     await page.hover("#generate-button-dropdown a");
     await delay(5000);
-    await page.screenshot({ path: "./tmp_screenshots/btn_gener.png" });
+    // await page.screenshot({ path: "./tmp_screenshots/btn_gener.png" });
     await page.click("#btnGenerate");
 
     let buttonClicked = false;
@@ -173,7 +179,7 @@ async function generateVideo(prompt) {
         await delay(10000); // Adjust the delay time as needed
       }
     }
-    await page.screenshot({ path: "./tmp_screenshots/post_render.png" });
+    // await page.screenshot({ path: "./tmp_screenshots/post_render.png" });
 
     // await page.click('.css-13kkobs'); // this downloads movie in browser ...
     // await page.click('.css-i3999f'); // show Link to download movie
@@ -190,7 +196,7 @@ async function generateVideo(prompt) {
     console.log("video done on link:");
     console.log(src);
 
-    await page.screenshot({ path: "./tmp_screenshots/video_download.png" });
+    // await page.screenshot({ path: "./tmp_screenshots/video_download.png" });
 
     const file = fs.createWriteStream("./UI/videos/video.mp4");
     const request = https.get(src, function (response) {

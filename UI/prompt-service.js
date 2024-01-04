@@ -136,7 +136,7 @@ generateVidButton.addEventListener("click", async () => {
         document.getElementById("vid-link").innerHTML = data.response;
         generateVidButton.style.fontSize = "1em";
         loader3.style.visibility = "hidden";
-        video.load();
+        location.reload();
       } else {
         console.error("Błąd:", vidResponse.status, vidResponse.statusText);
       }
