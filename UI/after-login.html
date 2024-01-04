@@ -8,18 +8,21 @@
   </head>
   <body>
     <header>
-      <h2 class="logo">Logo</h2>
+      <img class="logo" src="/images/logo.png" />
       <a href="/home">
         <button class="btnLogin-popUp" onclick="route()">Log out</button>
       </a>
     </header>
 
-    <section>
+    <section id="section1">
       <div class="wrapper-after-login smaller">
         <div class="form-box">
           <div class="sec-1">
             <h2>Generate idea with chatGPT</h2>
-            <button class="btn" id="generate-prompt-btn">Generate</button>
+            <button class="btn" id="generate-prompt-btn">
+              Generate
+              <div id="loader1"></div>
+            </button>
           </div>
         </div>
       </div>
@@ -35,19 +38,25 @@
                 <input type="login" id="idea-input" required />
                 <label>Come up with your own idea..</label>
               </div>
-              <button type="submit" class="btn" id="idea-send">Send</button>
+              <button type="submit" class="btn" id="idea-send">
+                Send
+                <div id="loader2"></div>
+              </button>
             </form>
           </div>
         </div>
       </div>
     </section>
-    <section>
+    <section id="section2">
       <div class="wrapper-after-login kaiber">
         <div class="form-box">
           <div class="sec-2">
             <h2>Here is your video idea!</h2>
             <h4>Edit it if you are not satisfied</h4>
-            <button type="submit" class="btn">Generate</button>
+            <button type="submit" class="btn" id="generate-vid-btn">
+              Generate
+              <div id="loader3"></div>
+            </button>
           </div>
         </div>
         <textarea
@@ -58,7 +67,7 @@
         ></textarea>
       </div>
     </section>
-    <section>
+    <section id="section3">
       <div class="wraper-for-video">
         <div class="wrapper-after-login overview">
           <div class="form-box">
@@ -68,18 +77,25 @@
                 You can now upload it on your <br />
                 YouTube channel
               </h4>
-              <button type="submit" class="btn">Upload</button>
+              <h4 id="vid-link">
+              </h4>
+              <button type="submit" class="btn">
+                Upload
+                <div id="loader4"></div>
+              </button>
             </div>
           </div>
         </div>
+        <!-- IFRAME VID PATH NOT WORKING -->
         <iframe
           height="530"
-          src="short_temp.mp4"
+          src="../videos/video.mp4"
           frameborder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         >
         </iframe>
       </div>
+      <!-- <canvas class="background"></canvas> -->
     </section>
 
     <script src="script.js"></script>
@@ -93,5 +109,6 @@
       nomodule
       src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
     ></script>
+    <!-- <script src="./particles.min.js"></script> -->
   </body>
 </html>
