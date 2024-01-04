@@ -12,6 +12,8 @@ const section2 = document.getElementById("section2");
 const section3 = document.getElementById("section3");
 const generateVidButton = document.getElementById("generate-vid-btn");
 
+const video = document.querySelector("video");
+
 generatePromptBtn.addEventListener("click", async () => {
   generatePromptBtn.style.fontSize = 0;
   loader1.style.visibility = "visible";
@@ -132,8 +134,9 @@ generateVidButton.addEventListener("click", async () => {
         console.log("Odpowiedź z serwera:", data);
         console.log("Odpowiedź z serwera:", data.response);
         document.getElementById("vid-link").innerHTML = data.response;
-        sendIdeaButton.style.fontSize = "1em";
+        generateVidButton.style.fontSize = "1em";
         loader3.style.visibility = "hidden";
+        video.load();
       } else {
         console.error("Błąd:", vidResponse.status, vidResponse.statusText);
       }
@@ -145,7 +148,6 @@ generateVidButton.addEventListener("click", async () => {
   }
 
   section3.scrollIntoView({ behavior: "smooth" });
-  
 });
 
 function getCookie(name) {

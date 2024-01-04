@@ -3,6 +3,7 @@ const btnPopUp = document.querySelector(".btnLogin-popUp");
 const iconClose = document.querySelector(".icon-close");
 
 window.onload = function () {
+  video.load();
   Particles.init({
     selector: ".background",
     maxParticles: 220,
@@ -21,7 +22,6 @@ iconClose.addEventListener("click", () => {
   wrapper.classList.remove("active-popUp");
 });
 
-
 function getCookie(name) {
   var nameEQ = name + "=";
   var cookies = document.cookie.split(";");
@@ -32,8 +32,6 @@ function getCookie(name) {
   }
   return null;
 }
-
-
 
 async function login() {
   var username = document.getElementById("username").value;
@@ -59,8 +57,6 @@ async function login() {
       console.error("Error:", error);
     });
 }
-
-
 
 async function checkTokenAndRedirectIfLoggedIn() {
   var cookies = document.cookie;
