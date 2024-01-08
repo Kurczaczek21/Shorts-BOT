@@ -10,7 +10,12 @@ const loader4 = document.getElementById("loader4");
 const section1 = document.getElementById("section1");
 const section2 = document.getElementById("section2");
 const section3 = document.getElementById("section3");
+
+const videoURL = document.getElementById("vid-link");
+const videoTitle = document.getElementById("vid-title");
+const videoDesc = document.getElementById("vid-desc");
 const generateVidButton = document.getElementById("generate-vid-btn");
+const uploadVidButton = document.getElementById("upload-vid-btn");
 
 const video = document.querySelector("video");
 
@@ -129,11 +134,16 @@ generateVidButton.addEventListener("click", async () => {
       });
 
       if (vidResponse.ok) {
-        console.log("DONE..........");
         const data = await vidResponse.json();
         console.log("Odpowiedź z serwera:", data);
         console.log("Odpowiedź z serwera:", data.response);
-        document.getElementById("vid-link").innerHTML = data.response;
+        console.log("Odpowiedź z serwera:", data.response.url);
+        console.log("Odpowiedź z serwera:", data.response.title);
+        console.log("Odpowiedź z serwera:", data.response.description);
+        videoURL.innerHTML = data.response.url;
+        videoTitle.value = data.response.title;
+        videoDesc.value = data.response.description;
+
         generateVidButton.style.fontSize = "1em";
         loader3.style.visibility = "hidden";
         location.reload();
@@ -149,6 +159,33 @@ generateVidButton.addEventListener("click", async () => {
 
   section3.scrollIntoView({ behavior: "smooth" });
 });
+
+uploadVidButton.addEventListener("click", async () => {
+  try {
+    const vidCaption = videoTitle.value + videoDesc.value;
+    console.log(caption);
+    console.log(videoURL.innerHTML);
+    videoData={
+      caption: vidCaption,
+      url: videoURL.innerHTML
+    }
+    const vidResponse = await fetch("/upload", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: videoData, //asasa
+    });
+    // processVideo(videoURL.innerHTML, caption, accessToken, igUserId)
+  } catch (error) {
+    console.error("Błąd:", error.message);
+  }
+
+  generatePromptBtn.style.fontSize = "1em";
+  loader1.style.visibility = "hidden";
+  section2.scrollIntoView({ behavior: "smooth" });
+});
+
 
 function getCookie(name) {
   var nameEQ = name + "=";

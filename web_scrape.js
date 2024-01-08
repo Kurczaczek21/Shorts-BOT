@@ -210,7 +210,12 @@ async function generateVideo(prompt) {
     });
 
     await browser.close();
-    return src;
+    const jsonResponse = {
+      title: JSONprompt.title,
+      description: JSONprompt.description,
+      url: src
+    };
+    return jsonResponse;
   } catch (error) {
     console.error("Error during API call:", error.message);
     throw error;

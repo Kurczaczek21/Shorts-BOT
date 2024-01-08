@@ -12,6 +12,8 @@ const connectDB = require("./backend/MongoDB/connectDB");
 const loggedInRouter = require("./backend/routes/loggedInRoute");
 const authRoutes = require("./backend/MongoDB/auth");
 const registerRoutes = require("./backend/MongoDB/register");
+const { processVideo } = require('./insta_upload_v2/mainProcessor');
+
 
 module.exports = {
   // Konfiguracja webpack
@@ -107,6 +109,21 @@ app.post("/genvid", async (req, res) => {
 
   try {
     const response = await generateVideo(prompt);
+    res.json({ response });
+  } catch (error) {
+    console.error("Błąd:", error.message);
+    res.status(500).json({ error: "Wystąpił błąd." });
+  }
+});
+
+app.post("/upload", async (req, res) => {
+  const data = req.body;
+
+  try {
+    console.log(data);
+    console.log(data.url);
+    console.log(data.caption);
+    const response = await processVideo(data.url, data.caption, process.env.ACCESS_TOKEN, process.env.IG_USER_ID);
     res.json({ response });
   } catch (error) {
     console.error("Błąd:", error.message);
