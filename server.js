@@ -117,7 +117,7 @@ app.post("/genvid", async (req, res) => {
 });
 
 app.post("/upload", async (req, res) => {
-  const data = req.body;
+  const data = req.body.data;
 
   try {
     console.log(data);

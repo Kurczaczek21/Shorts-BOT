@@ -140,7 +140,10 @@ generateVidButton.addEventListener("click", async () => {
         console.log("Odpowiedź z serwera:", data.response.url);
         console.log("Odpowiedź z serwera:", data.response.title);
         console.log("Odpowiedź z serwera:", data.response.description);
-        videoURL.innerHTML = data.response.url;
+        console.log(videoURL.innerHTML);
+        videoURL.value = data.response.url;
+        console.log('after');
+        console.log(videoURL.value);
         videoTitle.value = data.response.title;
         videoDesc.value = data.response.description;
 
@@ -163,27 +166,27 @@ generateVidButton.addEventListener("click", async () => {
 uploadVidButton.addEventListener("click", async () => {
   try {
     const vidCaption = videoTitle.value + videoDesc.value;
-    console.log(caption);
-    console.log(videoURL.innerHTML);
+    console.log(videoURL.value);
+    console.log(vidCaption);
     videoData={
       caption: vidCaption,
-      url: videoURL.innerHTML
+      url: videoURL.value
     }
+    console.log(videoData);
     const vidResponse = await fetch("/upload", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: videoData, //asasa
+      body:  JSON.stringify({ data: videoData }),
     });
-    // processVideo(videoURL.innerHTML, caption, accessToken, igUserId)
   } catch (error) {
     console.error("Błąd:", error.message);
   }
 
-  generatePromptBtn.style.fontSize = "1em";
-  loader1.style.visibility = "hidden";
-  section2.scrollIntoView({ behavior: "smooth" });
+  // generatePromptBtn.style.fontSize = "1em";
+  // loader1.style.visibility = "hidden";
+  // section2.scrollIntoView({ behavior: "smooth" });
 });
 
 

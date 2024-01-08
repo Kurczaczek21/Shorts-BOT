@@ -70,7 +70,7 @@ async function generateVideo(prompt) {
       (links, concatenatedString) => {
         links.forEach((el) => (el.innerHTML = concatenatedString));
       },
-      concatenatedSentences
+      JSONprompt.title+'. '+concatenatedSentences
     );
     // await page.screenshot({ path: "./tmp_screenshots/user_input.png" });
     await delay(10000);

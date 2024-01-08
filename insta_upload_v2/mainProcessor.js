@@ -20,6 +20,7 @@ async function processVideo(videoUrl, caption, accessToken, igUserId) {
     }
 
     console.log('Processing finished');
+    return "OK";
   } catch (error) {
     console.error(error.message);
   }
