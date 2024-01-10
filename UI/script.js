@@ -14,6 +14,10 @@ window.onload = function () {
   });
 };
 
+// test video src change to force reload
+var video = document.querySelector('video');
+   video.src += '?' + new Date().getTime();
+
 btnPopUp.addEventListener("click", () => {
   wrapper.classList.add("active-popUp");
 });

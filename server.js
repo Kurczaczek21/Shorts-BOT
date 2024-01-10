@@ -86,10 +86,10 @@ app.post("/modify", async (req, res) => {
       {
         "title": "TYTUL FILMU",
         "scenes": [
-          "TEKST wyswetlanyna scenie 1",
-          "TEKST wyswetlanyna scenie 2",
-          "TEKST wyswetlanyna scenie 3",
-          "TESKT wyswetilani na koncu filmu"
+          "TEKST wyświetlany na scenie 1",
+          "TEKST wyświetlany na scenie 2",
+          "TEKST wyświetlany na scenie 3",
+          "TESKT wyświetlany na koncu filmu"
         ],
         "description": "krótki opis filmu i 3 tagi każdy po znaku #"
       };  

@@ -17,8 +17,6 @@ const videoDesc = document.getElementById("vid-desc");
 const generateVidButton = document.getElementById("generate-vid-btn");
 const uploadVidButton = document.getElementById("upload-vid-btn");
 
-const video = document.querySelector("video");
-
 generatePromptBtn.addEventListener("click", async () => {
   generatePromptBtn.style.fontSize = 0;
   loader1.style.visibility = "visible";
@@ -135,21 +133,11 @@ generateVidButton.addEventListener("click", async () => {
 
       if (vidResponse.ok) {
         const data = await vidResponse.json();
-        console.log("Odpowiedź z serwera:", data);
         console.log("Odpowiedź z serwera:", data.response);
-        console.log("Odpowiedź z serwera:", data.response.url);
-        console.log("Odpowiedź z serwera:", data.response.title);
-        console.log("Odpowiedź z serwera:", data.response.description);
-        console.log(videoURL.innerHTML);
         videoURL.value = data.response.url;
-        console.log('after');
-        console.log(videoURL.value);
         videoTitle.value = data.response.title;
         videoDesc.value = data.response.description;
-
-        generateVidButton.style.fontSize = "1em";
-        loader3.style.visibility = "hidden";
-        location.reload();
+        // generateVidButton.style.fontSize = "1em";
       } else {
         console.error("Błąd:", vidResponse.status, vidResponse.statusText);
       }
@@ -159,20 +147,31 @@ generateVidButton.addEventListener("click", async () => {
   } catch (error) {
     console.error("Błąd:", error.message);
   }
-
+  console.log("AFTER TRY CATCH!!!!!!!!!");
+  loader3.style.visibility = "hidden";
+  console.log("HIDDEN BUTTON");
   section3.scrollIntoView({ behavior: "smooth" });
+  console.log("scrolled");
+  delay(2000)
+  console.log("delayed");
+  location.reload();
+  console.log("reloaded");
 });
+
+function delay(time) {
+  return new Promise(function (resolve) {
+    setTimeout(resolve, time);
+    console.log(time / 1000 + "s passed");
+  });
+}
 
 uploadVidButton.addEventListener("click", async () => {
   try {
     const vidCaption = videoTitle.value + videoDesc.value;
-    console.log(videoURL.value);
-    console.log(vidCaption);
     videoData={
       caption: vidCaption,
       url: videoURL.value
     }
-    console.log(videoData);
     const vidResponse = await fetch("/upload", {
       method: "POST",
       headers: {
