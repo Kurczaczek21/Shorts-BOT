@@ -199,17 +199,20 @@ async function generateVideo(prompt) {
     // await page.screenshot({ path: "./tmp_screenshots/video_download.png" });
 
     const file = fs.createWriteStream("./UI/videos/video.mp4");
-    const request = https.get(src, function (response) {
-      response.pipe(file);
+    const downloadPromise = new Promise((resolve) => {
+      const request = https.get(src, function (response) {
+        response.pipe(file);
 
-      // after download completed close filestream
-      file.on("finish", () => {
-        file.close();
-        console.log("Download Completed");
+        // after download completed close filestream
+        file.on("finish", () => {
+          file.close();
+          console.log("Download Completed");
+          resolve(); // Resolve the promise when download is completed
+        });
       });
     });
 
-    await browser.close();
+    await Promise.all([downloadPromise, browser.close()]);
     const jsonResponse = {
       title: JSONprompt.title,
       description: JSONprompt.description,

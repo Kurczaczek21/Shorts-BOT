@@ -137,7 +137,6 @@ generateVidButton.addEventListener("click", async () => {
         videoURL.value = data.response.url;
         videoTitle.value = data.response.title;
         videoDesc.value = data.response.description;
-        // generateVidButton.style.fontSize = "1em";
       } else {
         console.error("Błąd:", vidResponse.status, vidResponse.statusText);
       }
@@ -147,15 +146,11 @@ generateVidButton.addEventListener("click", async () => {
   } catch (error) {
     console.error("Błąd:", error.message);
   }
-  console.log("AFTER TRY CATCH!!!!!!!!!");
+  generateVidButton.style.fontSize = "1em";
   loader3.style.visibility = "hidden";
-  console.log("HIDDEN BUTTON");
   section3.scrollIntoView({ behavior: "smooth" });
-  console.log("scrolled");
-  delay(2000)
-  console.log("delayed");
+  await delay(2000);
   location.reload();
-  console.log("reloaded");
 });
 
 function delay(time) {
@@ -168,26 +163,21 @@ function delay(time) {
 uploadVidButton.addEventListener("click", async () => {
   try {
     const vidCaption = videoTitle.value + videoDesc.value;
-    videoData={
+    videoData = {
       caption: vidCaption,
-      url: videoURL.value
-    }
+      url: videoURL.value,
+    };
     const vidResponse = await fetch("/upload", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body:  JSON.stringify({ data: videoData }),
+      body: JSON.stringify({ data: videoData }),
     });
   } catch (error) {
     console.error("Błąd:", error.message);
   }
-
-  // generatePromptBtn.style.fontSize = "1em";
-  // loader1.style.visibility = "hidden";
-  // section2.scrollIntoView({ behavior: "smooth" });
 });
-
 
 function getCookie(name) {
   var nameEQ = name + "=";
