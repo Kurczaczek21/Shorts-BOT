@@ -5,42 +5,30 @@ const cors = require("cors");
 const Dotenv = require("dotenv-webpack");
 const { chatWithOpenAI } = require("./chatGPT_API");
 const { generateVideo } = require("./web_scrape");
-const User = require("./backend/MongoDB/userModel");
-const jwt = require("jsonwebtoken");
-
 const connectDB = require("./backend/MongoDB/connectDB");
-const loggedInRouter = require("./backend/routes/loggedInRoute");
-const authRoutes = require("./backend/MongoDB/auth");
-const registerRoutes = require("./backend/MongoDB/register");
+const authRoutes = require("./backend/routes/auth");
 const { processVideo } = require("./insta_upload_v2/mainProcessor");
 
 module.exports = {
-  // Konfiguracja webpack
   plugins: [new Dotenv()],
 };
 
 const port = process.env.PORT;
-
 connectDB();
-
 app.use(cors());
-
 app.use(express.json());
 
 // Login & Register
-app.use("/login", authRoutes);
-app.use("/register", registerRoutes);
-app.get("/logged-in", (req, res) => {
+// app.use("/login", authRoutes);
+app.use("/api/auth", authRoutes);
+
+app.get("/panel", (req, res) => {
   res.sendFile(__dirname + "/UI/after-login.html");
 });
 
 app.use(express.static(__dirname + "/UI"));
 
-app.get("/", (req, res) => {
-  res.send("Welcome to the server!!!");
-});
-
-app.get("/chat", authenticateToken, async (req, res) => {
+app.get("/chat", async (req, res) => {
   const prompt =
     "Napisz 5 zdań, kompletnie niezależnych od siebie w numerowanej liście";
 
@@ -53,7 +41,7 @@ app.get("/chat", authenticateToken, async (req, res) => {
   }
 });
 
-app.post("/chat1", authenticateToken, async (req, res) => {
+app.post("/chat1", async (req, res) => {
   console.log(req.body.prompt);
   const prompt = req.body.prompt;
 
@@ -139,7 +127,7 @@ app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}/logged-in`);
 });
 
-app.get("/home", (req, res) => {
+app.get("/", (req, res) => {
   res.sendFile(__dirname + "/UI/home-page.html");
 });
 
@@ -163,7 +151,7 @@ function authenticateToken(req, res, next) {
   const authHeader = req.headers["authorization"];
   console.log(authHeader);
   const token = authHeader && authHeader.split(" ")[1];
-  console.log("TOken: " + token);
+  console.log("token: " + token);
   if (token == null) return res.sendStatus(401);
 
   jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
