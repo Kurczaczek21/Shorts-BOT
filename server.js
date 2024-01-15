@@ -22,11 +22,26 @@ app.use(express.json());
 // app.use("/login", authRoutes);
 app.use("/api/auth", authRoutes);
 
+app.use(express.static(__dirname + "/UI"));
+
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/UI/home-page.html");
+});
+
 app.get("/panel", (req, res) => {
   res.sendFile(__dirname + "/UI/after-login.html");
 });
 
-app.use(express.static(__dirname + "/UI"));
+app.use((err,req,res,next) =>{
+  const statusCode = err.statusCode || 500;
+  const message = err.message || 'Internal server Error';
+  return res.status(statusCode).json({
+    success: false,
+    message,
+    statusCode,
+  });
+});
+
 
 app.get("/chat", async (req, res) => {
   const prompt =
@@ -124,39 +139,5 @@ app.post("/upload", async (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}/logged-in`);
+  console.log(`Server running on http://localhost:${port}/`);
 });
-
-app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/UI/home-page.html");
-});
-
-// tests
-app.get("/tests", authenticateToken, (req, res) => {
-  res.json("Nice");
-});
-
-app.post("/test-login", async (req, res) => {
-  const username = req.body.username;
-  const user = await User.findOne({ username });
-  const id = user._id;
-  console.log(id);
-  const accessToken = jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: "30d",
-  });
-  res.json({ accessToken: accessToken });
-});
-
-function authenticateToken(req, res, next) {
-  const authHeader = req.headers["authorization"];
-  console.log(authHeader);
-  const token = authHeader && authHeader.split(" ")[1];
-  console.log("token: " + token);
-  if (token == null) return res.sendStatus(401);
-
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err) return res.sendStatus(418);
-    req.user = user;
-    next();
-  });
-}
