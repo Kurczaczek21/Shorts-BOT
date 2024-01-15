@@ -12,8 +12,7 @@ const connectDB = require("./backend/MongoDB/connectDB");
 const loggedInRouter = require("./backend/routes/loggedInRoute");
 const authRoutes = require("./backend/MongoDB/auth");
 const registerRoutes = require("./backend/MongoDB/register");
-const { processVideo } = require('./insta_upload_v2/mainProcessor');
-
+const { processVideo } = require("./insta_upload_v2/mainProcessor");
 
 module.exports = {
   // Konfiguracja webpack
@@ -123,7 +122,12 @@ app.post("/upload", async (req, res) => {
     console.log(data);
     console.log(data.url);
     console.log(data.caption);
-    const response = await processVideo(data.url, data.caption, process.env.ACCESS_TOKEN, process.env.IG_USER_ID);
+    const response = await processVideo(
+      data.url,
+      data.caption,
+      process.env.ACCESS_TOKEN,
+      process.env.IG_USER_ID
+    );
     res.json({ response });
   } catch (error) {
     console.error("Błąd:", error.message);

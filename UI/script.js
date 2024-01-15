@@ -1,5 +1,5 @@
 const wrapper = document.querySelector(".wrapper");
-const btnPopUp = document.querySelector(".btnLogin-popUp");
+const btnPopUp = document.querySelector("#login-btn");
 const iconClose = document.querySelector(".icon-close");
 
 window.onload = function () {
@@ -18,13 +18,13 @@ window.onload = function () {
 var video = document.querySelector('video');
    video.src += '?' + new Date().getTime();
 
-btnPopUp.addEventListener("click", () => {
+async function openPopup() {
   wrapper.classList.add("active-popUp");
-});
+};
 
-iconClose.addEventListener("click", () => {
+async function closePopup() {
   wrapper.classList.remove("active-popUp");
-});
+};
 
 function getCookie(name) {
   var nameEQ = name + "=";
@@ -63,6 +63,7 @@ async function login() {
 }
 
 async function checkTokenAndRedirectIfLoggedIn() {
+  console.log("btnclicl");
   var cookies = document.cookie;
 
   // Check if "token" cookie exists

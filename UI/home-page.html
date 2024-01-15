@@ -9,7 +9,9 @@
   <body>
     <header>
       <img class="logo" src="/images/logo.png" />
-      <button class="btnLogin-popUp">Login</button>
+      <button class="btnLogin-popUp" id="login-btn" onclick="openPopup()">
+        Login
+      </button>
     </header>
 
     <div class="box">
@@ -84,7 +86,7 @@
       </div>
     </div>
     <div class="wrapper">
-      <span class="icon-close">
+      <span class="icon-close" onclick="closePopup()">
         <ion-icon name="close-outline"></ion-icon>
       </span>
       <div class="form-box login">
