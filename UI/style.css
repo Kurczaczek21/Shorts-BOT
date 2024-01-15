@@ -372,7 +372,7 @@ textarea {
   animation: spin 1.5s infinite ease-in-out;
   visibility: hidden;
 }
-#vid-link{
+#vid-link {
   margin-top: 1em;
   font-size: 10px;
   padding: 0.5em;
@@ -385,7 +385,7 @@ textarea {
   margin-top: 1em;
 }
 #vid-title {
-  height: 3em;
+  height: 2em;
 }
 #vid-desc {
   height: unset;
