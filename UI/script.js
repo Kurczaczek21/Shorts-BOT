@@ -15,21 +15,44 @@ window.onload = function () {
 };
 
 // test video src change to force reload
-var video = document.querySelector('video');
-   video.src += '?' + new Date().getTime();
+var video = document.querySelector("video");
+video.src += "?" + new Date().getTime();
 
 async function openPopup() {
   wrapper.classList.add("active-popUp");
-};
+}
 
 async function closePopup() {
   wrapper.classList.remove("active-popUp");
-};
+}
 
-
+async function signOut() {
+  window.location.href = "/";
+}
 async function login() {
   var username = document.getElementById("username").value;
   var password = document.getElementById("password").value;
+
+  try {
+    const response = await fetch("/api/auth/signin", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username: username, password: password }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data);
+
+      window.location.href = "/panel";
+    } else {
+      console.error("Error:", response.statusText);
+    }
+  } catch (error) {
+    console.error("Error:", error);
+  }
 }
 
 async function checkTokenAndRedirectIfLoggedIn() {

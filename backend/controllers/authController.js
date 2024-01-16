@@ -27,7 +27,11 @@ const signin = async (req, res, next) => {
     const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET); // secret - random string for sec
     const { password: hashedPassword, ...restOfUser } = validUser._doc; // removing password from response
     res
-      .cookie("accessToken", token, { httpOnly: true })
+      .cookie("accessToken", token, {
+        httpOnly: true,
+        sameSite: "None",
+        secure: true,
+      })
       .status(200)
       .json(restOfUser); // httpOnly - true -> prevent 3rd party apps to modify cookie ez
   } catch (error) {
