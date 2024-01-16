@@ -39,4 +39,12 @@ const signin = async (req, res, next) => {
   }
 };
 
-module.exports = { signup, signin };
+const signout = async (req, res, next) => {
+  res.clearCookie("accessToken");
+  res.status(200).json({ message: "Logged out successfully" });
+};
+
+const checkLogin = async (req, res, next) => {
+  };
+
+module.exports = { signup, signin, signout, checkLogin };

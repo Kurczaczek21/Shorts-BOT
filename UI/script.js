@@ -27,7 +27,18 @@ async function closePopup() {
 }
 
 async function signOut() {
-  window.location.href = "/";
+  try {
+    const response = await fetch("/api/auth/signout", {
+      method: "POST",
+    });
+    if (response.ok) {
+      window.location.href = "/";
+    } else {
+      console.error("Error:", response.statusText);
+    }
+  } catch (error) {
+    console.error("Error:", error);
+  }
 }
 async function login() {
   var username = document.getElementById("username").value;
@@ -56,5 +67,25 @@ async function login() {
 }
 
 async function checkTokenAndRedirectIfLoggedIn() {
-  var cookies = document.cookie;
+  try {
+    const response = await fetch("/api/auth/check", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username: username, password: password }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data);
+
+      window.location.href = "/panel";
+    } else {
+      console.error("Error:", response.statusText);
+    }
+  } catch (error) {
+    console.error("Error:", error);
+  }
+  window.location.href = "/panel";
 }
