@@ -1,5 +1,5 @@
 const wrapper = document.querySelector(".wrapper");
-const btnPopUp = document.querySelector("#login-btn");
+const loginPopUpBtn = document.querySelector("#login-btn");
 const iconClose = document.querySelector(".icon-close");
 
 window.onload = function () {
@@ -56,8 +56,11 @@ async function login() {
 
     if (response.ok) {
       const data = await response.json();
+      console.log(data.username);
+      loginPopUpBtn.innerText = "Logged In" + data.username;
       // data.username=
       // window.location.href = "/panel";
+      await closePopup();
     } else {
       console.error("Error:", response.statusText);
     }

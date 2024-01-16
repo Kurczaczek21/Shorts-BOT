@@ -9,6 +9,9 @@ const { generateVideo } = require("./web_scrape");
 const connectDB = require("./backend/MongoDB/connectDB");
 const authRoutes = require("./backend/routes/auth");
 const { processVideo } = require("./insta_upload_v2/mainProcessor");
+const authenticateToken = require("./backend/middleware/authenticateToken");
+
+
 
 module.exports = {
   plugins: [new Dotenv()],
@@ -30,7 +33,7 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/UI/home-page.html");
 });
 
-app.get("/panel", (req, res) => {
+app.get("/panel", authenticateToken, (req, res) => {
   res.sendFile(__dirname + "/UI/after-login.html");
 });
 
