@@ -43,6 +43,12 @@ body {
   -ms-overflow-style: none; /* Internet Explorer 10+ */
 }
 
+h1 {
+  color: #a8a8a8;
+  user-select: none;
+  margin: 10px;
+}
+
 header {
   position: fixed;
   top: 0;
@@ -372,7 +378,7 @@ textarea {
   animation: spin 1.5s infinite ease-in-out;
   visibility: hidden;
 }
-#vid-link{
+#vid-link {
   margin-top: 1em;
   font-size: 10px;
   padding: 0.5em;
