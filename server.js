@@ -1,4 +1,5 @@
 const express = require("express");
+const cookieParser = require("cookie-parser");
 const app = express();
 require("dotenv").config();
 const cors = require("cors");
@@ -17,6 +18,7 @@ const port = process.env.PORT;
 connectDB();
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 
 // Login & Register
 // app.use("/login", authRoutes);
@@ -32,16 +34,15 @@ app.get("/panel", (req, res) => {
   res.sendFile(__dirname + "/UI/after-login.html");
 });
 
-app.use((err,req,res,next) =>{
+app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
-  const message = err.message || 'Internal server Error';
+  const message = err.message || "Internal server Error";
   return res.status(statusCode).json({
     success: false,
     message,
     statusCode,
   });
 });
-
 
 app.get("/chat", async (req, res) => {
   const prompt =

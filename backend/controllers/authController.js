@@ -44,7 +44,16 @@ const signout = async (req, res, next) => {
   res.status(200).json({ message: "Logged out successfully" });
 };
 
-const checkLogin = async (req, res, next) => {
-  };
+const checkLoginMiddleware = async (req, res, next) => {
+  const accessToken = req.cookies.accessToken;
+  console.log(accessToken);
+  if (accessToken) {
+    //   res.redirect('/panel');
+    res.status(200).json({ message: "User is logged in" });
+  } else {
+    console.log("user not logged in");
+    next();
+  }
+};
 
-module.exports = { signup, signin, signout, checkLogin };
+module.exports = { signup, signin, signout, checkLoginMiddleware };

@@ -40,6 +40,7 @@ async function signOut() {
     console.error("Error:", error);
   }
 }
+
 async function login() {
   var username = document.getElementById("username").value;
   var password = document.getElementById("password").value;
@@ -55,9 +56,8 @@ async function login() {
 
     if (response.ok) {
       const data = await response.json();
-      console.log(data);
-
-      window.location.href = "/panel";
+      // data.username=
+      // window.location.href = "/panel";
     } else {
       console.error("Error:", response.statusText);
     }
@@ -70,22 +70,16 @@ async function checkTokenAndRedirectIfLoggedIn() {
   try {
     const response = await fetch("/api/auth/check", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username: username, password: password }),
+      credentials: "include",
     });
+    console.log(response);
 
     if (response.ok) {
-      const data = await response.json();
-      console.log(data);
-
       window.location.href = "/panel";
     } else {
-      console.error("Error:", response.statusText);
+      console.log("User not logged innnnnnnnnnn");
     }
   } catch (error) {
     console.error("Error:", error);
   }
-  window.location.href = "/panel";
 }
