@@ -3,19 +3,20 @@ const loginPopUpBtn = document.querySelector("#login-btn");
 const iconClose = document.querySelector(".icon-close");
 
 window.onload = function () {
+  checkToken();
   try {
     video.load();
-  } catch (error) {
-  }
-  checkToken();
-  Particles.init({
-    selector: ".background",
-    maxParticles: 220,
-    sizeVariations: 3,
-    color: "#aaaaaa",
-    connectParticles: true,
-    minDistance: 80,
-  });
+  } catch (error) {}
+  try {
+    Particles.init({
+      selector: ".background",
+      maxParticles: 220,
+      sizeVariations: 3,
+      color: "#aaaaaa",
+      connectParticles: true,
+      minDistance: 80,
+    });
+  } catch (error) {}
 };
 
 async function checkToken() {
@@ -41,8 +42,7 @@ async function checkToken() {
 try {
   var video = document.querySelector("video");
   video.src += "?" + new Date().getTime();
-} catch (error) {
-}
+} catch (error) {}
 
 async function openPopup() {
   wrapper.classList.add("active-popUp");
@@ -110,4 +110,8 @@ async function checkTokenAndRedirectIfLoggedIn() {
   } catch (error) {
     console.error("Error:", error);
   }
+}
+
+async function goHome() {
+  window.location.href = "/";
 }

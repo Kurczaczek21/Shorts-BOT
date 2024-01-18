@@ -60,7 +60,7 @@ app.get("/chat", authenticateToken, async (req, res) => {
   }
 });
 
-app.post("/chat1", async (req, res) => {
+app.post("/chat1", authenticateToken, async (req, res) => {
   console.log(req.body.prompt);
   const prompt = req.body.prompt;
 
@@ -73,7 +73,7 @@ app.post("/chat1", async (req, res) => {
   }
 });
 
-app.post("/modify", async (req, res) => {
+app.post("/modify", authenticateToken, async (req, res) => {
   console.log(req.body.prompt);
   const prompt = req.body.prompt;
 
@@ -110,7 +110,7 @@ app.post("/modify", async (req, res) => {
   }
 });
 
-app.post("/genvid", async (req, res) => {
+app.post("/genvid", authenticateToken, async (req, res) => {
   const prompt = req.body.prompt;
 
   try {
@@ -122,7 +122,7 @@ app.post("/genvid", async (req, res) => {
   }
 });
 
-app.post("/upload", async (req, res) => {
+app.post("/upload", authenticateToken, async (req, res) => {
   const data = req.body.data;
 
   try {

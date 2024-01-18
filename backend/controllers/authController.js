@@ -26,7 +26,7 @@ const signin = async (req, res, next) => {
 
     const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET); // secret - random string for sec
     const { password: hashedPassword, ...restOfUser } = validUser._doc; // removing password from response
-    res.setHeader('Cache-Control','private');
+    res.setHeader("Cache-Control", "private");
     res
       .cookie("accessToken", token, {
         httpOnly: true,
@@ -48,11 +48,13 @@ const signout = async (req, res, next) => {
 const checkLoginMiddleware = async (req, res, next) => {
   const accessToken = req.cookies.accessToken;
   console.log(accessToken);
-  if (accessToken) {
-    //   res.redirect('/panel');
-    res.status(200).json({ message: "User is logged in" });
-  } else {
-    console.log("user not logged in");
+  try {
+    if (accessToken) {
+      res.status(200).json({ message: "User is logged in" });
+    } else {
+      console.log("user not logged in");
+    }
+  } catch (error) {
     next();
   }
 };
