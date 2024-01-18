@@ -1,13 +1,5 @@
 const axios = require('axios');
-require('dotenv').config();
 
-// Load environment variables
-const igUserId = process.env.IG_USER_ID;
-const accessToken = process.env.ACCESS_TOKEN;
-const videoUrl = process.env.VIDEO_URL;
-const caption = process.env.CAPTION;
-
-// 1 - upload video to instagram
 async function uploadVideo(videoUrl, accessToken, igUserId, caption) {
   const postUrl = `https://graph.facebook.com/v18.0/${igUserId}/media`;
   const payload = {
@@ -27,7 +19,6 @@ async function uploadVideo(videoUrl, accessToken, igUserId, caption) {
   }
 }
 
-// 2 - get status_code
 async function getStatusCode(igContainerId, accessToken) {
   const graphUrl = 'https://graph.facebook.com/v18.0/';
   const url = `${graphUrl}${igContainerId}`;
@@ -45,7 +36,6 @@ async function getStatusCode(igContainerId, accessToken) {
   }
 }
 
-// 3 - publish video on instagram
 async function publishVideo(results, accessToken, igUserId) {
   if ('id' in results) {
     const creationId = results.id;
@@ -68,38 +58,6 @@ async function publishVideo(results, accessToken, igUserId) {
   }
 }
 
-// Main function
-async function main() {
-  try {
-    // Call uploadVideo function
-    const results = await uploadVideo(videoUrl, accessToken, igUserId, caption);
-    console.log('Please wait, the video is uploading');
-    await new Promise((resolve) => setTimeout(resolve, 15000)); // Wait for 15 seconds
-
-    const igContainerId = results.id;
-
-    // Call getStatusCode function
-    const s = await getStatusCode(igContainerId, accessToken);
-
-    if (s === 'FINISHED') {
-      console.log('Video uploaded successfully!');
-      // Call publishVideo function
-      await publishVideo(results, accessToken, igUserId);
-    } else {
-      console.log('Please wait a bit more...');
-      await new Promise((resolve) => setTimeout(resolve, 60000)); // Wait for 60 seconds
-      // Call publishVideo function
-      await publishVideo(results, accessToken, igUserId);
-    }
-
-    console.log('Program finished');
-  } catch (error) {
-    console.error(error.message);
-  }
-}
-
-// Run the main function
-// main();
 module.exports = {
   uploadVideo,
   getStatusCode,

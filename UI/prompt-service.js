@@ -49,32 +49,16 @@ sendIdeaButton.addEventListener("click", async () => {
   loader2.style.visibility = "visible";
   console.log(userPrompt);
 
-  // Get all cookies
-  var cookies = document.cookie;
-
-  // Check if "token" cookie exists
-  if (cookies.indexOf("token=") === -1) {
-    // "token" cookie not found, display alert
-    alert("No token cookie. Please log in first");
-    return;
-  }
-
-  var token = getCookie("token");
-  console.log(token);
-
   try {
     const response = await fetch("/chat1", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ prompt: userPrompt }),
     });
-
     if (response.ok) {
       const data = await response.json();
-      console.log("Odpowiedź z serwera:", data.response);
       promptTextarea.value = data.response;
     } else {
       console.error("Błąd:", response.status, response.statusText);
@@ -121,20 +105,23 @@ generateVidButton.addEventListener("click", async () => {
         videoURL.value = data.response.url;
         videoTitle.value = data.response.title;
         videoDesc.value = data.response.description;
+        section3.scrollIntoView({ behavior: "smooth" });
+        await delay(2000);
+        location.reload();
       } else {
         console.error("Błąd:", vidResponse.status, vidResponse.statusText);
+        alert("Unexpected error occured during video generation. Try again");
       }
     } else {
       console.error("Błąd:", response.status, response.statusText);
     }
   } catch (error) {
+    alert("Unexpected error occured. Try again");
+    console.log("Error occured, video not made.");
     console.error("Błąd:", error.message);
   }
   generateVidButton.style.fontSize = "1em";
   loader3.style.visibility = "hidden";
-  section3.scrollIntoView({ behavior: "smooth" });
-  await delay(2000);
-  location.reload();
 });
 
 function delay(time) {
@@ -145,6 +132,8 @@ function delay(time) {
 }
 
 uploadVidButton.addEventListener("click", async () => {
+  uploadVidButton.style.fontSize = 0;
+  loader4.style.visibility = "visible";
   try {
     const vidCaption = videoTitle.value + videoDesc.value;
     videoData = {
@@ -158,18 +147,11 @@ uploadVidButton.addEventListener("click", async () => {
       },
       body: JSON.stringify({ data: videoData }),
     });
+    alert("Video successfully uploaded!");
   } catch (error) {
+    alert("Unexpected error occured.");
     console.error("Błąd:", error.message);
   }
+  uploadVidButton.style.fontSize = "1em";
+  loader4.style.visibility = "hidden";
 });
-
-function getCookie(name) {
-  var nameEQ = name + "=";
-  var cookies = document.cookie.split(";");
-  for (var i = 0; i < cookies.length; i++) {
-    var cookie = cookies[i].trim();
-    if (cookie.indexOf(nameEQ) === 0)
-      return cookie.substring(nameEQ.length, cookie.length);
-  }
-  return null;
-}

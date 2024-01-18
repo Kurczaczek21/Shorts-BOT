@@ -63,12 +63,10 @@ app.get("/chat", authenticateToken, async (req, res) => {
 app.post("/chat1", authenticateToken, async (req, res) => {
   console.log(req.body.prompt);
   const prompt = req.body.prompt;
-
   try {
     const response = await chatWithOpenAI(prompt);
     res.json({ response });
   } catch (error) {
-    console.error("Błąd:", error.message);
     res.status(500).json({ error: "Wystąpił błąd podczas rozmowy z OpenAI." });
   }
 });
@@ -100,6 +98,7 @@ app.post("/modify", authenticateToken, async (req, res) => {
         "description": "krótki opis filmu i 3 tagi każdy po znaku #"
       };  
       Oczywiscie scen moze byc wiecej.
+      PAMIETAJ ZE NIE MOZESZ UZYWAC cudzysłowiów, ponieważ JSON nie zostanie poprawnie odczytany.
       `;
     console.log(prompt + input_info);
     const response = await chatWithOpenAI(prompt + input_info);
