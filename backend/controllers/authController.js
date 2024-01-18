@@ -11,8 +11,8 @@ const signup = async (req, res, next) => {
     await newUser.save();
     res.status(201).json({ message: "User created." });
   } catch (error) {
-    next(error);
-    // next(errorHandler(300, "cos"));
+    // next(error);
+    next(errorHandler(409, "User already exists in the database"));
   }
 };
 
