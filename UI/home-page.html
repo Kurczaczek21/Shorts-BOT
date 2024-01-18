@@ -4,13 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/x-icon" href="/images/logo.png">
     <title>Shorts Bot</title>
   </head>
   <body>
     <header>
       <img class="logo" src="/images/logo.png" />
       <button class="btnLogin-popUp" id="login-btn" onclick="openPopup()">
-        Login
+        Log In
       </button>
     </header>
 
@@ -53,7 +54,6 @@
           class="btnLogin-popUp"
           onclick="checkTokenAndRedirectIfLoggedIn()"
         >
-          <!-- <a href="/logged-in">Get started</a> -->
           Get started
         </button>
         <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
@@ -122,7 +122,6 @@
     <canvas class="background"></canvas>
 
     <script src="script.js"></script>
-    <script src="router.js"></script>
     <script
       type="module"
       src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"

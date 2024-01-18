@@ -26,6 +26,7 @@ const signin = async (req, res, next) => {
 
     const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET); // secret - random string for sec
     const { password: hashedPassword, ...restOfUser } = validUser._doc; // removing password from response
+    res.setHeader('Cache-Control','private');
     res
       .cookie("accessToken", token, {
         httpOnly: true,

@@ -21,25 +21,9 @@ generatePromptBtn.addEventListener("click", async () => {
   generatePromptBtn.style.fontSize = 0;
   loader1.style.visibility = "visible";
 
-  // Get all cookies
-  var cookies = document.cookie;
-
-  // Check if "token" cookie exists
-  if (cookies.indexOf("token=") === -1) {
-    // "token" cookie not found, display alert
-    alert("No token cookie. Please log in first");
-    return;
-  }
-
-  var token = getCookie("token");
-  console.log(token);
-
   try {
     const response = await fetch("/chat", {
       method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
     });
 
     if (response.ok) {

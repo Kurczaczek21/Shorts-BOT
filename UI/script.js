@@ -3,7 +3,11 @@ const loginPopUpBtn = document.querySelector("#login-btn");
 const iconClose = document.querySelector(".icon-close");
 
 window.onload = function () {
-  video.load();
+  try {
+    video.load();
+  } catch (error) {
+  }
+  checkToken();
   Particles.init({
     selector: ".background",
     maxParticles: 220,
@@ -14,9 +18,31 @@ window.onload = function () {
   });
 };
 
+async function checkToken() {
+  try {
+    const response = await fetch("/api/auth/check", {
+      method: "POST",
+      credentials: "include",
+    });
+    console.log(response);
+    if (response.ok) {
+      loginPopUpBtn.innerText = "Logged In";
+      loginPopUpBtn.disabled = true;
+    } else {
+      loginPopUpBtn.innerText = "Log In";
+      loginPopUpBtn.disabled = false;
+    }
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
 // test video src change to force reload
-var video = document.querySelector("video");
-video.src += "?" + new Date().getTime();
+try {
+  var video = document.querySelector("video");
+  video.src += "?" + new Date().getTime();
+} catch (error) {
+}
 
 async function openPopup() {
   wrapper.classList.add("active-popUp");
@@ -56,10 +82,9 @@ async function login() {
 
     if (response.ok) {
       const data = await response.json();
-      console.log(data.username);
-      loginPopUpBtn.innerText = "Logged In" + data.username;
-      // data.username=
-      // window.location.href = "/panel";
+      console.log("Logged in as: " + data.username);
+      loginPopUpBtn.innerText = "Logged In";
+      loginPopUpBtn.disabled = true;
       await closePopup();
     } else {
       console.error("Error:", response.statusText);

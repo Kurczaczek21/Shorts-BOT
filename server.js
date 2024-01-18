@@ -47,7 +47,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.get("/chat", async (req, res) => {
+app.get("/chat", authenticateToken, async (req, res) => {
   const prompt =
     "Napisz 5 zdań, kompletnie niezależnych od siebie w numerowanej liście";
 
