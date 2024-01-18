@@ -18,7 +18,9 @@ const generateVidButton = document.getElementById("generate-vid-btn");
 const uploadVidButton = document.getElementById("upload-vid-btn");
 
 generatePromptBtn.addEventListener("click", async () => {
+  console.log("prprpr");
   generatePromptBtn.style.fontSize = 0;
+  generatePromptBtn.disabled = true;
   loader1.style.visibility = "visible";
 
   try {
@@ -39,6 +41,7 @@ generatePromptBtn.addEventListener("click", async () => {
   }
 
   generatePromptBtn.style.fontSize = "1em";
+  generatePromptBtn.disabled = false;
   loader1.style.visibility = "hidden";
   section2.scrollIntoView({ behavior: "smooth" });
 });
@@ -46,6 +49,7 @@ generatePromptBtn.addEventListener("click", async () => {
 sendIdeaButton.addEventListener("click", async () => {
   const userPrompt = ideaInput.value.trim();
   sendIdeaButton.style.fontSize = 0;
+  sendIdeaButton.disabled = true;
   loader2.style.visibility = "visible";
   console.log(userPrompt);
 
@@ -67,6 +71,7 @@ sendIdeaButton.addEventListener("click", async () => {
     console.error("Błąd:", error.message);
   }
   sendIdeaButton.style.fontSize = "1em";
+  sendIdeaButton.disabled = false;
   loader2.style.visibility = "hidden";
   ideaInput.value = "";
   section2.scrollIntoView({ behavior: "smooth" });
@@ -74,6 +79,7 @@ sendIdeaButton.addEventListener("click", async () => {
 
 generateVidButton.addEventListener("click", async () => {
   generateVidButton.style.fontSize = 0;
+  generateVidButton.disabled = true;
   loader3.style.visibility = "visible";
   try {
     vidIdea = promptTextarea.value;
@@ -121,6 +127,7 @@ generateVidButton.addEventListener("click", async () => {
     console.error("Błąd:", error.message);
   }
   generateVidButton.style.fontSize = "1em";
+  generateVidButton.disabled = false;
   loader3.style.visibility = "hidden";
 });
 
@@ -133,6 +140,7 @@ function delay(time) {
 
 uploadVidButton.addEventListener("click", async () => {
   uploadVidButton.style.fontSize = 0;
+  uploadVidButton.disabled = true;
   loader4.style.visibility = "visible";
   try {
     const vidCaption = videoTitle.value + videoDesc.value;
@@ -153,5 +161,6 @@ uploadVidButton.addEventListener("click", async () => {
     console.error("Błąd:", error.message);
   }
   uploadVidButton.style.fontSize = "1em";
+  uploadVidButton.disabled = false;
   loader4.style.visibility = "hidden";
 });
