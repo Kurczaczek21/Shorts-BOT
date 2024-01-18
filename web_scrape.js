@@ -18,8 +18,9 @@ async function generateVideo(prompt) {
   }
   console.log(prompt);
 
+  let browser;
   try {
-    const browser = await puppeteer.launch({
+    browser = await puppeteer.launch({
       // slowMo: 100,
       // headless: false,
       // args: chromium.args,
@@ -212,7 +213,7 @@ async function generateVideo(prompt) {
       });
     });
 
-    await Promise.all([downloadPromise, browser.close()]);
+    await Promise.all([downloadPromise]);
     const jsonResponse = {
       title: JSONprompt.title,
       description: JSONprompt.description,
@@ -222,6 +223,11 @@ async function generateVideo(prompt) {
   } catch (error) {
     console.error("Error during API call:", error.message);
     throw error;
+  } finally{
+    if (browser) {
+      console.log("Closing browser.");
+      await browser.close();
+    }
   }
 }
 
